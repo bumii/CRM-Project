@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>matriksCRM</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+
+    <style>
+
+        .nav-link{
+            color: white;
+        }
+
+        .nav-link:hover{
+            color: black;
+        }
+
+        .nav-item{
+            margin-left: 15px;
+            padding: 8px 0px;
+        }
+
+        .nav-item:hover{
+            background-color: cornsilk;
+        }
+
+        body{
+            margin: 0;
+            padding: 0;
+        }
+
+        .brand-logo {
+            border-right: 2px solid white;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-dark" style="padding: 0; margin-bottom: 10px">
+        <div class="container" style="padding: 0px 16px">
+            <div class="navbar-header brand-logo">
+                <a href="@Url.Action("Index", "Home")" class="navbar-brand"><img src="~/Images/crmLogo.png" /></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Dolor sit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Amet consectetur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Adipiscing elit</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
