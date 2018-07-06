@@ -1,3 +1,14 @@
 ﻿.main-container {
-    border: 1px solid red;
+    background-image: url('../Images/agreement-business.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5));
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding-top: 275px;
+    padding-bottom: 275px;
+    color: black;
+}
+
+.main-container h4 {
+    padding: 0
 }
