@@ -6,129 +6,98 @@
     <title>Matriks CRM</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg">
         <div class="container nav-container">
-            <a href="@Url.Action("Index", "Home")" class="brand-logo"><img src="~/Images/crmLogo.png" /></a>
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand" style="font-family: 'Montserrat', sans-serif; font-size:x-large; font-weight:bold; padding-left:20px">matriksCRM</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-dropdown" aria-controls="#nav-dropdown" aria-expanded="false" aria-label="Toggle Navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="nav-dropdown" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Dolor sit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Amet consectetur</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Adipiscing elit</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Orci nisl</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sign Up</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
 
-    <div class="container-fluid" style="padding: 0;">
+    <div class="container-fluid" style="padding: 0">
         @RenderBody()
     </div>
-    <div class="container">
+    <div class="container-fluid" style="padding:0">
         <hr />
-        <footer class="page-footer font-small blue pt-4 mt-4">
-            <!-- Footer -->
+        <footer class="page-footer font-small bg-dark pt-4 mt-4">
+
+            <div class="container-fluid text-center text-md-left">
 
 
-                <!-- Footer Links -->
-                <div class="container-fluid text-center text-md-left">
+                <div class="row">
 
-                    <!-- Grid row -->
-                    <div class="row">
 
-                        <!-- Grid column -->
-                        <div class="col-md-6 mt-md-0 mt-3">
+                    <div class="col-md-6 mt-md-0 mt-3">
 
-                            <!-- Content -->
-                            <h5 class="text-uppercase">Footer Content</h5>
-                            <p>Here you can use rows and columns here to organize your footer content.</p>
 
-                        </div>
-                        <!-- Grid column -->
-
-                        <hr class="clearfix w-100 d-md-none pb-3">
-
-                        <!-- Grid column -->
-                        <div class="col-md-3 mb-md-0 mb-3">
-
-                            <!-- Links -->
-                            <h5 class="text-uppercase">Links</h5>
-
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a href="#!">Link 1</a>
-                                </li>
-                                <li>
-                                    <a href="#!">Link 2</a>
-                                </li>
-                                <li>
-                                    <a href="#!">Link 3</a>
-                                </li>
-                                <li>
-                                    <a href="#!">Link 4</a>
-                                </li>
-                            </ul>
-
-                        </div>
-                        <!-- Grid column -->
-                        <!-- Grid column -->
-                        <div class="col-md-3 mb-md-0 mb-3">
-
-                            <!-- Links -->
-                            <h5 class="text-uppercase">Links</h5>
-
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a href="#!">Link 1</a>
-                                </li>
-                                <li>
-                                    <a href="#!">Link 2</a>
-                                </li>
-                                <li>
-                                    <a href="#!">Link 3</a>
-                                </li>
-                                <li>
-                                    <a href="#!">Link 4</a>
-                                </li>
-                            </ul>
-
-                        </div>
-                        <!-- Grid column -->
+                        <h5 class="text-uppercase">Footer Content</h5>
+                        <p>Here you can use rows and columns here to organize your footer content.</p>
 
                     </div>
-                    <!-- Grid row -->
+
+
+                    <hr class="clearfix w-100 d-md-none pb-3">
+
+
+                    <div class="col-md-3 mb-md-0 mb-3">
+
+
+                        <h5 class="text-uppercase">Links</h5>
+
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#!">Link 1</a>
+                            </li>
+                            <li>
+                                <a href="#!">Link 2</a>
+                            </li>
+                            <li>
+                                <a href="#!">Link 3</a>
+                            </li>
+                            <li>
+                                <a href="#!">Link 4</a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col-md-3 mb-md-0 mb-3">
+
+
+                        <h5 class="text-uppercase">Links</h5>
+
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#!">Link 1</a>
+                            </li>
+                            <li>
+                                <a href="#!">Link 2</a>
+                            </li>
+                            <li>
+                                <a href="#!">Link 3</a>
+                            </li>
+                            <li>
+                                <a href="#!">Link 4</a>
+                            </li>
+                        </ul>
+
+                    </div>
+
 
                 </div>
-                <!-- Footer Links -->
-                <!-- Copyright -->
-                <div class="footer-copyright text-center py-3">
-                </div>
-                <!-- Copyright -->
 
 
-            <!-- Footer -->
+            </div>
+
+            <div class="footer-copyright text-center py-3">
+            </div>
+
         </footer>
     </div>
 
