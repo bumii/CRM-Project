@@ -3,6 +3,103 @@
     ViewBag.Title = "Category";
 }
 
-<h2>Category</h2>
+<style>
+    .leftpanel {
+        width: 200px;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background: #343a40;
+    }
 
+    .logopanel{
 
+        padding: 10px;
+        background : #1d2939;
+        border-bottom : 1px solid #939ca9;
+    }
+
+    .leftpanelinner{
+        padding : 5px 10px;
+    }
+
+    .sidebartitle{
+        font-size:11px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 10px;
+    }
+
+    #menu li{
+        margin-bottom: 10px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    
+    #menu a {
+        color: #999;
+        text-decoration: none;
+        font-size: 14px;
+
+    }
+
+   #menu li:hover{
+       background-color:#fff;
+   }
+    #menu li:hover a {
+        color: #343a40;
+    }
+
+   .li-element{
+       width: 100%;
+   }
+   .icons{
+       
+       margin-right:5px;
+   }
+
+   .nav-bracket{
+       margin-bottom:30px;
+   }
+   
+</style>
+
+<div class="leftpanel">
+    <div class=" logopanel" ></div>
+     <div class="leftpanelinner">
+         <h5 class="sidebartitle">Menü</h5>
+         <ul id="menu" class="nav nav-pills nav-stacked nav-bracket">
+             <li id="Menüli" class="active li-element">
+                 <a href="/Home/Category">
+                     <i class="fas fa-home icons"></i>
+                     <span>Anasayfa</span>
+                 </a>
+             </li>
+             <li id="Uygulamali" class="nav-parent li-element">
+                 <a href="#!"><i class="fab fa-product-hunt icons"></i>
+                     <span>Uygulama Projeleri</span>
+                 </a>
+             </li>
+             <li id="Dogruli" class="nav-parent li-element">
+                 <a href="#!"><i class="fas fa-money-bill icons"></i>
+                     <span>Doğrudan Satış Projeleri</span>
+                 </a>
+             </li>
+             <li id="istakipid" class="nav-parent li-element">
+                 <a href="#!"><i class="fas fa-briefcase icons"></i>
+                     <span>İş Takip Platformu</span>
+                 </a>
+             </li>
+             <li id="musteritakipid" class="nav-parent li-element">
+                 <a href="#!"> <i class="far fa-address-book icons"></i>
+                     <span>Müşteri Takip Platformu</span>
+                 </a>
+             </li> 
+             <li id="ajandaid" class="nav-parent li-element">
+                 <a href="#!"><i class="fas fa-calendar-alt icons"></i>
+                     <span>Ajanda</span>
+                 </a>
+             </li>
+         </ul>
+     </div>
+</div>
