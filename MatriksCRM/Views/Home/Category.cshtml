@@ -5,15 +5,17 @@
 
 <style>
     .leftpanel {
+
         width: 200px;
         top: 0;
         left: 0;
         z-index: 100;
         background: #343a40;
+        position:absolute;
     }
 
     .logopanel{
-
+     
         padding: 10px;
         background : #1d2939;
         border-bottom : 1px solid #939ca9;
@@ -61,7 +63,43 @@
    .nav-bracket{
        margin-bottom:30px;
    }
-   
+
+    .mainpanel {
+        background: #e4e7ea;
+        min-height: 400px;
+        margin-left:200px;
+      
+    }
+    .headerbar {
+        border-left: 1px solid #eee;
+        background: #fff;
+    }
+
+    .header-right{
+        float:right;
+    }
+    .headermenu{
+        list-style:none;
+        margin:0;
+        padding:0;
+    }
+
+    .headermenu:after{
+        clear:both;
+        display:block;
+        content: '';
+    }
+   .headermenu > li{
+       display:inline-block;
+       float:left;
+       border-left:1px solid #eee;
+       position:relative;
+       height:50px;
+   }
+   .dropdown-menu{
+       font-size:9pt;
+   }
+  
 </style>
 
 <div class="leftpanel">
@@ -103,3 +141,26 @@
          </ul>
      </div>
 </div>
+<div class="mainpanel">
+    <div class="headerbar">
+        <div class="header-right">
+            <ul class="headermenu">
+                <li class>
+                    <button type="button" class="btn btn-sm btn-white " data-toggle="dropdown">
+                        <i class="fa fa-th-list fa-2x " style="color:#1d2939;"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right dropdown-menu2" role="menu">
+                        <li>
+                            <a href="#!">
+                            <i class="glyphicon glyphicon-list-alt mr5 "></i>"Tekliflerim"
+                            </a>
+
+                        </li>
+                    </ul>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
