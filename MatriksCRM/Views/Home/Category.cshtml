@@ -2,10 +2,8 @@
 @{
     ViewBag.Title = "Category";
 }
-
 <style>
     .leftpanel {
-
         width: 200px;
         top: 0;
         left: 0;
@@ -13,68 +11,55 @@
         background: #343a40;
         position:absolute;
     }
-
-    .logopanel{
-     
+    .logopanel{    
         padding: 10px;
         background : #1d2939;
         border-bottom : 1px solid #939ca9;
     }
-
     .leftpanelinner{
         padding : 5px 10px;
     }
-
     .sidebartitle{
         font-size:11px;
         text-transform: uppercase;
         color: #999;
         margin-bottom: 10px;
     }
-
     #menu li{
         margin-bottom: 10px;
         padding: 5px;
         border-radius: 5px;
-    }
-    
+    }   
     #menu a {
         color: #999;
         text-decoration: none;
         font-size: 14px;
-
     }
-
-   #menu li:hover{
+    #menu li:hover{
        background-color:#fff;
-   }
+    }
     #menu li:hover a {
         color: #343a40;
     }
-
-   .li-element{
+    .li-element{
        width: 100%;
-   }
-   .icons{
-       
+    }
+    .icons{
        margin-right:5px;
-   }
-
-   .nav-bracket{
+    }
+    .nav-bracket{
        margin-bottom:30px;
-   }
-
+    }
     .mainpanel {
         background: #e4e7ea;
         min-height: 400px;
         margin-left:200px;
-      
     }
     .headerbar {
         border-left: 1px solid #eee;
         background: #fff;
+        height:50px;
     }
-
     .header-right{
         float:right;
     }
@@ -83,7 +68,6 @@
         margin:0;
         padding:0;
     }
-
     .headermenu:after{
         clear:both;
         display:block;
@@ -95,11 +79,61 @@
        border-left:1px solid #eee;
        position:relative;
        height:50px;
+       padding:5px;
+       background-color:#fff;
+      
    }
-   .dropdown-menu{
-       font-size:9pt;
+   
+    .dropdown-menu {
+       font-size: 9pt;
+       padding:10px;     
+    }
+    .dropdown-menu a {
+        color: #999;
+        text-decoration: none;  
+    }
+    .dropicons {
+        margin-right: 10px;
+    }  
+    .headermenu .dropdown-menu li{
+        padding:5px;
+       
+    }
+    .headermenu .dropdown-menu li:hover{
+        background-color:#428bca;
+        color:#fff;
+    }
+    .headermenu .dropdown-menu li:hover a {
+            color: #fff;
+    }
+   .headermenu .dropdown-toggle img{
+       vertical-align:middle;
+       margin-right:5px;
+       width:26px;
+       border-radius:50px;
+       border:1px #e1e1e1;
+
    }
-  
+   .headermenu .dropdown-toggle .caret{
+       margin-left:5px;
+   }
+   .headermenu .dropdown-menu-usermenu {
+        background: #1d2939;
+        min-width:210px;
+   }
+
+   .dropdown-menu-usermenu li {
+        color: #999;
+   }
+   .headermenu .dropdown-toggle{
+       background-color:#fff;
+   }
+   .btn-white{
+       background-color:#fff;
+   }
+
+   
+        
 </style>
 
 <div class="leftpanel">
@@ -146,19 +180,51 @@
         <div class="header-right">
             <ul class="headermenu">
                 <li class>
-                    <button type="button" class="btn btn-sm btn-white " data-toggle="dropdown">
-                        <i class="fa fa-th-list fa-2x " style="color:#1d2939;"></i>
+                    <button type="button" class="btn btn-sm btn-white " data-toggle="dropdown" style="color:#fff;">
+                        <i class="fas fa-plus fa-2x " style="color:#1d2939;"></i>
                     </button>
-                    <ul class="dropdown-menu pull-right dropdown-menu2" role="menu">
+                    <ul class="dropdown-menu pull-right dropdown-menu-usermenu" role="menu">
                         <li>
                             <a href="#!">
-                            <i class="glyphicon glyphicon-list-alt mr5 "></i>"Tekliflerim"
+                            <i class="fas fa-briefcase dropicons "></i>Teklif
                             </a>
-
+                        </li>
+                        <li>
+                            <a href="#!">
+                                <i class="far fa-address-book dropicons"></i>Firma
+                            </a>
                         </li>
                     </ul>
-                </li>
-                
+                </li>     
+            <li>
+                <div class ="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="mm">
+                        <img  src="~/Images/profil.png" />
+                        <span hidden-xs>Sümeyye Keskin</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                        <li>
+                            <a href="#!">
+                                <i class="fas fa-user dropicons"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#!">
+                                <i class="fas fa-cog dropicons"></i>
+                                <span>Ayarlar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Home/Index">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Çıkış</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             </ul>
         </div>
     </div>
