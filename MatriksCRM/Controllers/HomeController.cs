@@ -18,6 +18,11 @@ namespace MatriksCRM.Controllers
         {
             return View();
         }
-        
+
+        public ActionResult Homepage()
+        {
+            return View();
+        }
+
     }
 }

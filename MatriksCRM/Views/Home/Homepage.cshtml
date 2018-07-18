@@ -1,0 +1,80 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<link href="~/Content/bootstrap-grid.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-reboot.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Markazi+Text" rel="stylesheet">
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Homepage</title>
+</head>
+<script js>
+$("#btnLogin").click(function(event) {
+
+    //Fetch form to apply custom Bootstrap validation
+    var form = $("#formLogin")
+
+    if (form[0].checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    form.addClass('was-validated');
+  });
+</script>
+<body class="bg-dark">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="font-family: 'Markazi Text', serif; text-center text-white mb-4">matriksCRM</h1>
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <!-- form card login -->
+                        <div class="card rounded-0">
+                            <div class="card-header">
+                                <h3 class="mb-0">Giriş</h3>
+                            </div>
+                            <div class="card-body">
+                                <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST">
+                                    <div class="form-group">
+                                        <label for="uname1">Kullanıcı Adı</label>
+                                        <input type="text" class="form-control form-control-lg rounded-0" name="uname1" id="uname1" required="">
+                                        <div class="invalid-feedback">Oops, bunu kaçırdın.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Şifre</label>
+                                        <input type="password" class="form-control form-control-lg rounded-0" id="pwd1" required="" autocomplete="new-password">
+                                        <div class="invalid-feedback">Şifrenizi de giriniz!</div>
+                                    </div>
+                                    <div>
+                                        <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description small text-dark">Ne seni unutturacak kadar zaman geçecek; ne de geçen zaman seni unutturmaya yetecek; bırakıp gitsen de unuturum sanma; zaman alışmayı öğretir, unutmayı asla.</span>
+                                        </label>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Giriş Yap</button>
+                                </form>
+                            </div>
+                            <!--/card-block-->
+                        </div>
+                        <!-- /form card login -->
+                    </div>
+
+                </div>
+                <!--/row-->
+            </div>
+            <!--/col-->
+        </div>
+        <!--/row-->
+    </div>
+    <!--/container-->
+</body>
+</html>
