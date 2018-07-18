@@ -1,29 +1,37 @@
-﻿$('#login-submit').submit(function () {
-    var $login_username = $('#inputEmail').val();
-    var $login_password = $('#inputPassword').val();
+﻿$("#login-modal form").submit(function () {
+    var $lg_username = $('#login_username').val();
+    var $lg_password = $('#login_password').val();
+    var $lg_rememberme = false;
 
-    $("#login_submit").attr("disabled", "disabled");
+    if ($('#login_rememberme').val() == "on") {
+        $lg_rememberme = true;
+    }
+
+    $("#login_submit_btn").attr("disabled", "disabled");
 
     $.ajax({
         method: "post",
-        url: "/Index/Login",
-        data: { email: $rg_email, password: $rg_password }
+        url: "/ModalLogin/SignIn",
+        data: { login_username: $lg_username, login_password: $lg_password, login_rememberme: $lg_rememberme }
     }).done(function (res) {
         if (res.HasError) {
+            msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "error", "glyphicon-remove", res.Result);
 
-            $("#register_submit_btn").removeAttr("disabled");
+            $('#login_username').val("");
+            $('#login_password').val("");
 
-            $('#register_username').val("");
-            $('#register_email').val("");
-            $('#register_password').val("");
+            $("#login_submit_btn").removeAttr("disabled");
         }
         else {
-            msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "success", "glyphicon-ok", res.Result);
+            msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "success", "glyphicon-ok", res.Result);
 
             setTimeout(function () {
                 location.reload();
-            }, 2000);
+            }, 1500);
         }
-
     });
+
+    return false;
+    break;
+
 });
