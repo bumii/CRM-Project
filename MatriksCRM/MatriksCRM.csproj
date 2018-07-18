@@ -100,11 +100,9 @@
     <Content Include="Content\Index.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
-    <Content Include="Images\adam.jpg" />
     <Content Include="Images\agreement-business.jpg" />
     <Content Include="Images\crmLogo.png" />
     <Content Include="Images\profil.png" />
-    <Content Include="Images\stajyerler.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
