@@ -9,20 +9,14 @@ namespace MatriksCRM.Controllers
     public class HomeController : Controller
     {
 
-        public ActionResult Index()
+        public ActionResult Login()
         {
             return View();
         }
 
-        public ActionResult Category()
+        public ActionResult User()
         {
             return View();
         }
-
-        public ActionResult Homepage()
-        {
-            return View();
-        }
-
     }
 }

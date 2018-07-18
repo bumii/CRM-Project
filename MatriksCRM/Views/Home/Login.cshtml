@@ -14,21 +14,22 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Homepage</title>
+    <script>
+        $("#btnLogin").click(function (event) {
+
+            //Fetch form to apply custom Bootstrap validation
+            var form = $("#formLogin")
+
+            if (form[0].checkValidity() === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            form.addClass('was-validated');
+        });
+    </script>
 </head>
-<script js>
-$("#btnLogin").click(function(event) {
 
-    //Fetch form to apply custom Bootstrap validation
-    var form = $("#formLogin")
-
-    if (form[0].checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
-    }
-
-    form.addClass('was-validated');
-  });
-</script>
 <body class="bg-dark">
     <div class="container py-5">
         <div class="row">
@@ -57,7 +58,7 @@ $("#btnLogin").click(function(event) {
                                         <label class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
-                                            <span class="custom-control-description small text-dark">Ne seni unutturacak kadar zaman geçecek; ne de geçen zaman seni unutturmaya yetecek; bırakıp gitsen de unuturum sanma; zaman alışmayı öğretir, unutmayı asla.</span>
+                                            <span class="custom-control-description small text-dark"></span>
                                         </label>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Giriş Yap</button>
