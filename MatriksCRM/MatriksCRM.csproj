@@ -99,6 +99,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\adam.jpg" />
     <Content Include="Images\agreement-business.jpg" />
     <Content Include="Images\crmLogo.png" />
     <Content Include="Images\profil.png" />

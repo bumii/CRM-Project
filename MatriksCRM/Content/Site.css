@@ -1,43 +1,6 @@
-﻿body {
-    margin-top: 0;
-}
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
-.navbar {
-    padding: 0;
-    margin-bottom: 30px;
-}
-
-.nav-container {
-    padding: 0;
-}
-
-.nav-link {
-    color: white;
-}
-
-    .nav-link:hover {
-        color: black;
-    }
-
-.nav-item {
-    margin-left: 15px;
-    padding: 15px 0;
-}
-
-    .nav-item:hover {
-        background-color: gray;
-    }
-
-.brand-logo {
-    border-right: 2px solid white;
-    padding-right: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+﻿.mainpanel {
+    background-image: url(~/Images/adam.jpg);
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+  
 }
