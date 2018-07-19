@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MatriksCRM.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,9 @@ namespace MatriksCRM.Controllers
 {
     public class HomeController : Controller
     {
-
         public ActionResult Index()
         {
+
             return View();
         }
     }
