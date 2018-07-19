@@ -1,0 +1,90 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+
+.image-slider {
+    list-style: none;
+    display:inline-block;
+    position: relative;
+    margin-left: 18%;
+    margin-top: 10%;
+    height: 40%;
+    width: 40%;
+}
+
+.image-slider:hover figure{
+	-webkit-animation-play-state: paused;
+	text-decoration: none;
+}
+
+
+.image-slider figure {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: gecisler 10s ease both infinite;
+}
+
+
+.image-slider > figure > figcaption{
+	visibility: hidden;
+	color: #000;
+	text-align: center;
+}
+.image-slider > figure:hover figcaption{
+	visibility:visible}
+
+
+figure figcaption a {
+	color: #000;
+	text-decoration: none;
+}
+
+
+.image-slider figure:nth-child(1) {
+	-webkit-animation-delay: 5s;
+}
+.image-slider figure:nth-child(2) {
+	-webkit-animation-delay: 10s;
+} 
+.image-slider figure:nth-child(3) {
+	-webkit-animation-delay: 15s;
+}
+.image-slider figure:nth-child(4) {
+	-webkit-animation-delay: 20s;
+}
+.image-slider figure:nth-child(5) {
+	-webkit-animation-delay: 25s;
+}
+ 
+.image-slider > figure > img {
+  border-radius: 50%;
+  border: 2px solid #000000;
+}
+
+
+@-webkit-keyframes gecisler {
+  0%, 10% {
+    opacity: 1;
+    transform: none;
+    z-index: 10;
+  }
+  25%, 35% {
+    opacity: 0.2;
+    transform: translate3d(-50%, 0, 0) scale(0.6);
+  }
+  50% {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0) scale(0.6);
+  }
+  60% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0) scale(0.6);
+  }
+  75%, 85% {
+    opacity: 0.2;
+    transform: translate3d(50% 0, 0) scale(0.6);
+  }
+}

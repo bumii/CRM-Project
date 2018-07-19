@@ -42,8 +42,8 @@ namespace MatriksCRM.Controllers
                 while (reader.Read())
                 {
                     Session.Add("ID", reader.GetInt32(0));
-                    Session.Add("Isim", reader.GetInt32(3));
-                    Session.Add("Soyad", reader.GetInt32(4));
+                    Session.Add("Isim", reader.GetString(3));
+                    Session.Add("Soyad", reader.GetString(4));
                 }
                 connection.Close();
                 return RedirectToAction("Index", "Home");
