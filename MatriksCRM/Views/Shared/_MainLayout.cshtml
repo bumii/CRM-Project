@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "_MainLayout";
+}
+
+<head>
+    <link href="~/Content/Main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<div class="container-fluid" style="padding: 0">
+    <div class="row">
+        <div class="col-md-2" style="border: 1px solid red">
+            @*<div class="leftpanel">
+                        <div class=" logopanel">
+                            <h1>
+                                <span onclick="location.href='#'" style="cursor:pointer">
+                                    <img class="img-responsive" src="~/Images/stajyerler.png" style="width:250px" />
+                                </span>
+                            </h1>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light bg-light dropdown-toggle" data-toggle="dropdown" id="mm">
+                                    <img src="~/Images/profil.png" style="height:20px" />
+                                    <span hidden-xs>@(Session["Isim"] + " " + Session["Soyad"])</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                    <li>
+                                        <a href="#!">
+                                            <i class="fas fa-user dropicons"></i>
+                                            <span>Profil</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#!">
+                                            <i class="fas fa-cog dropicons"></i>
+                                            <span>Ayarlar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Home/Index">
+                                            <i class="fas fa-sign-out-alt dropicons"></i>
+                                            <span>Çıkış</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="leftpanelinner">
+                            <ul id="menu" class="nav nav-pills nav-stacked nav-bracket">
+                                <li id="Menüli" class="active li-element">
+                                    <a href="/Home/Category">
+                                        <i class="fas fa-home icons"></i>
+                                        <span>Anasayfa</span>
+                                    </a>
+                                </li>
+                                <li id="Uygulamali" class="nav-parent li-element">
+                                    <a href="#!">
+                                        <i class="fab fa-product-hunt icons"></i>
+                                        <span>Uygulama Projeleri</span>
+                                    </a>
+                                </li>
+                                <li id="Dogruli" class="nav-parent li-element">
+                                    <a href="#!">
+                                        <i class="fas fa-money-bill icons"></i>
+                                        <span>Doğrudan Satış Projeleri</span>
+                                    </a>
+                                </li>
+                                <li id="istakipid" class="nav-parent li-element">
+                                    <a href="#!">
+                                        <i class="fas fa-briefcase icons"></i>
+                                        <span>İş Takip Platformu</span>
+                                    </a>
+                                </li>
+                                <li id="musteritakipid" class="nav-parent li-element">
+                                    <a href="#!">
+                                        <i class="far fa-address-book icons"></i>
+                                        <span>Müşteri Takip Platformu</span>
+                                    </a>
+                                </li>
+                                <li id="ajandaid" class="nav-parent li-element">
+                                    <a href="#!">
+                                        <i class="fas fa-calendar-alt icons"></i>
+                                        <span>Ajanda</span>
+
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                </div>*@
+        </div>
+        <div class="col-md-10" style="border: 1px solid green; padding: 0">
+            <div class="mainpanel">
+                @RenderBody()
+            </div>
+
+            <div class="container text-center" style="background: #000">
+                <div class="copyrights">
+                    <p class="white-txt">
+                        stajyerler CRM © 2018
+                        <br><br>
+                        <img class="footimg" src="~/Images/stajyerler.png" alt="Logo">
+                    </p>
+                    <a class="link" href="#">İletişim</a>&nbsp
+                    <a class="link" href="#">Gizlilik Politikası</a>&nbsp
+                    <a class="link" href="#">Kullanım Koşulları</a>
+                    <br><br>
+                    <p class="white-txt small">
+                        Tüm hakları saklıdır. stajyerler CRM© 2018
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

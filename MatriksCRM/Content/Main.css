@@ -1,0 +1,254 @@
+﻿#custom-search-input {
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+}
+
+    #custom-search-input .search-query {
+        padding-right: 3px;
+        padding-right: 4px \9;
+        padding-left: 3px;
+        padding-left: 4px \9;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+    #custom-search-input button {
+        border: 0;
+        background: none;
+        /** belows styles are working good */
+        padding: 2px 5px;
+        margin-top: 2px;
+        position: relative;
+        left: -28px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        color: #D9230F;
+    }
+
+.search-query:focus + button {
+    z-index: 3;
+}
+
+.copyrights {
+    margin-top: 25px;
+    margin-left: 18%;
+}
+
+.foot {
+    background: #000;
+}
+
+.dark-line {
+    border-top: 1px solid #525252;
+}
+
+.white-txt {
+    color: #FFF;
+}
+
+
+a.link {
+    color: #008acc;
+    border: 1px #008acc solid;
+    padding: 5px;
+    text-decoration: none;
+}
+
+    a.link:hover {
+        background: #008acc;
+        color: #383838;
+    }
+
+.footimg {
+    width: 5rem;
+}
+
+.leftpanel {
+    position: fixed;
+    width: 18%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    height: 100%;
+}
+
+.logopanel {
+    padding: 10px;
+    padding-bottom: 20px;
+    background: #000;
+    border-bottom: 1px solid #000;
+}
+
+.leftpanelinner {
+    margin-top: 20%;
+    padding: 5px 10px;
+}
+
+.sidebartitle {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+#menu li {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#menu li:hover {
+    background-color: #fff;
+}
+
+    #menu li:hover a {
+        color: #343a40;
+    }
+
+.li-element {
+    width: 100%;
+}
+
+.icons {
+    margin-right: 5px;
+}
+
+.nav-bracket {
+    margin-bottom: 30px;
+}
+
+.mainpanel {
+    background-image: url('../../Images/adam.jpg');
+    background-repeat: no-repeat ;
+    background-attachment: scroll;
+    background-size: cover;
+    min-height: 670px; 
+}
+
+.headerbar {
+    border-left: 1px solid #eee;
+    background: #999;
+    height: 50px;
+}
+
+.header-right {
+    float: right;
+}
+
+.headermenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .headermenu:after {
+        clear: both;
+        display: block;
+        content: '';
+    }
+
+    .headermenu > li {
+        display: inline-block;
+        float: left;
+        border-left: 1px solid #eee;
+        position: relative;
+        height: 50px;
+        padding: 5px;
+        background-color: #fff;
+    }
+
+.dropdown-menu {
+    font-size: 9pt;
+    padding: 10px;
+}
+
+    .dropdown-menu a {
+        color: #999;
+        text-decoration: none;
+    }
+
+.dropicons {
+    margin-right: 10px;
+}
+
+.headermenu .dropdown-menu li {
+    padding: 5px;
+}
+
+    .headermenu .dropdown-menu li:hover {
+        background-color: #428bca;
+        color: #fff;
+    }
+
+        .headermenu .dropdown-menu li:hover a {
+            color: #fff;
+        }
+
+.headermenu .dropdown-toggle img {
+    vertical-align: middle;
+    margin-right: 5px;
+    width: 26px;
+    border-radius: 50px;
+    border: 1px #e1e1e1;
+}
+
+.headermenu .dropdown-toggle .caret {
+    margin-left: 5px;
+}
+
+.headermenu .dropdown-menu-usermenu {
+    background: #343a40;
+    min-width: 200px;
+}
+
+.dropdown-menu-usermenu li {
+    color: #999;
+}
+
+.headermenu .dropdown-toggle {
+    background-color: #fff;
+}
+
+.btn-white {
+    background-color: #fff;
+}
+
+.img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.img-responsive2 {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    opacity: 0.4;
+}
+
+.contentpanel {
+    padding: 20px;
+    position: relative;
+}
+
+    .contentpanel::after {
+        clear: both;
+        display: block;
+        content: '';
+    }
+
