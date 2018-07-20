@@ -1,58 +1,11 @@
-﻿#custom-search-input {
-    margin: 0;
-    margin-top: 10px;
-    padding: 0;
-}
-
-    #custom-search-input .search-query {
-        padding-right: 3px;
-        padding-right: 4px \9;
-        padding-left: 3px;
-        padding-left: 4px \9;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
-
-    #custom-search-input button {
-        border: 0;
-        background: none;
-        /** belows styles are working good */
-        padding: 2px 5px;
-        margin-top: 2px;
-        position: relative;
-        left: -28px;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        color: #D9230F;
-    }
-
-.search-query:focus + button {
-    z-index: 3;
-}
-
-.copyrights {
+﻿.copyrights {
     margin-top: 25px;
     margin-left: 18%;
 }
 
-.foot {
-    background: #000;
-}
-
-.dark-line {
-    border-top: 1px solid #525252;
-}
-
 .white-txt {
-    color: #FFF;
+    color: #fff;
 }
-
 
 a.link {
     color: #008acc;
@@ -71,24 +24,32 @@ a.link {
 }
 
 .leftpanel {
-    position: fixed;
+    background-color: #000;
+    /*position: fixed;
     width: 18%;
     top: 0;
     left: 0;
     z-index: 100;
-    height: 100%;
+    height: 100%;*/
 }
 
 .logopanel {
     padding: 10px;
-    padding-bottom: 20px;
-    background: #000;
-    border-bottom: 1px solid #000;
+}
+
+#collapseMenu {
+    padding: 10px;
+}
+
+#collapseMenu a{
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
 }
 
 .leftpanelinner {
-    margin-top: 20%;
-    padding: 5px 10px;
+    padding: 0 10px;
+    border: 1px solid green;
 }
 
 .sidebartitle {
@@ -98,27 +59,23 @@ a.link {
     margin-bottom: 10px;
 }
 
-#menu li {
+#menu a {
     margin-bottom: 10px;
     padding: 5px;
     border-radius: 5px;
 }
 
 #menu a {
-    color: #fff;
+    background: none;
     text-decoration: none;
     font-size: 14px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#menu li:hover {
+#menu a:hover {
     background-color: #fff;
 }
-
-    #menu li:hover a {
-        color: #343a40;
-    }
 
 .li-element {
     width: 100%;
@@ -126,10 +83,6 @@ a.link {
 
 .icons {
     margin-right: 5px;
-}
-
-.nav-bracket {
-    margin-bottom: 30px;
 }
 
 .mainpanel {
@@ -207,17 +160,15 @@ a.link {
     border: 1px #e1e1e1;
 }
 
-.headermenu .dropdown-toggle .caret {
-    margin-left: 5px;
-}
 
 .headermenu .dropdown-menu-usermenu {
     background: #343a40;
     min-width: 200px;
 }
 
-.dropdown-menu-usermenu li {
+.dropdown-menu-usermenu a {
     color: #999;
+    padding-left: 0;
 }
 
 .headermenu .dropdown-toggle {

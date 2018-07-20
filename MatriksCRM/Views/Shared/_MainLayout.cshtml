@@ -9,87 +9,62 @@
 
 <div class="container-fluid" style="padding: 0">
     <div class="row">
-        <div class="col-md-2" style="border: 1px solid red">
-            @*<div class="leftpanel">
-                        <div class=" logopanel">
-                            <h1>
-                                <span onclick="location.href='#'" style="cursor:pointer">
-                                    <img class="img-responsive" src="~/Images/stajyerler.png" style="width:250px" />
-                                </span>
-                            </h1>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-light bg-light dropdown-toggle" data-toggle="dropdown" id="mm">
-                                    <img src="~/Images/profil.png" style="height:20px" />
-                                    <span hidden-xs>@(Session["Isim"] + " " + Session["Soyad"])</span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
-                                    <li>
-                                        <a href="#!">
-                                            <i class="fas fa-user dropicons"></i>
-                                            <span>Profil</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!">
-                                            <i class="fas fa-cog dropicons"></i>
-                                            <span>Ayarlar</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/Home/Index">
-                                            <i class="fas fa-sign-out-alt dropicons"></i>
-                                            <span>Çıkış</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+        <div class="col-md-2 leftpanel">
+            <div class="container logopanel">
+                <div class="text-center">
+                    <a href=@Url.Action("Index", "Home")>
+                        <img class="img-responsive" src="~/Images/stajyerler.png" />
+                    </a>
+                </div>
+                <button type="button" class="btn btn-light bg-light btn-block" data-toggle="collapse" data-target="#collapseMenu" aria-expanded="false" aria-controls="collapseMenu" style="box-shadow: none; font-family: Arial, Helvetica, sans-serif">
+                    <img src="~/Images/profil.png" style="height:20px; float: left; margin-top: 3px;" />
+                    <span>@(Session["Isim"] + " " + Session["Soyad"])</span>
+                    <span><i class="fas fa-caret-down" style="float:right; padding-top: 4px;"></i></span>
+                </button>
+                <div class="list-group collapse dropdown-menu-usermenu rounded" id="collapseMenu">
+                    <a class="listgroup-item list-group-item-action" href="#!" style="margin-top: 0;">
+                        <i class="fas fa-user dropicons"></i>
+                        <span>Profil</span>
+                    </a>
+                    <a class="listgroup-item list-group-item-action" href="#!" style="">
+                        <i class="fas fa-cog dropicons"></i>
+                        <span>Ayarlar</span>
+                    </a>
+                    <a class="listgroup-item list-group-item-action" href="/Home/Index">
+                        <i class="fas fa-sign-out-alt dropicons"></i>
+                        <span>Çıkış</span>
+                    </a>
+                </div>
+            </div>
+            <div class="container leftpanelinner">
+                <div id="menu" class="list-group">
+                    <a href="/Home/Category" class="list-group-item list-group-item-action" id="Menüli">
+                        <i class="fas fa-home icons"></i>
+                        <span>Anasayfa</span>
+                    </a>
+                    <a href="#!" class="list-group-item list-group-item-action" id="Uygulamali">
+                        <i class="fab fa-product-hunt icons"></i>
+                        <span>Uygulama Projeleri</span>
+                    </a>
+                    <a href="#!" class="list-group-item list-group-item-action" id="Dogruli">
+                        <i class="fas fa-money-bill icons"></i>
+                        <span>Doğrudan Satış Projeleri</span>
+                    </a>
+                    <a href="#!" class="list-group-item list-group-item-action" id="istakipid">
+                        <i class="fas fa-briefcase icons"></i>
+                        <span>İş Takip Platformu</span>
+                    </a>
+                    <a href="#!" class="list-group-item list-group-item-action" id="musteritakipid">
+                        <i class="far fa-address-book icons"></i>
+                        <span>Müşteri Takip Platformu</span>
+                    </a>
 
-                        <div class="leftpanelinner">
-                            <ul id="menu" class="nav nav-pills nav-stacked nav-bracket">
-                                <li id="Menüli" class="active li-element">
-                                    <a href="/Home/Category">
-                                        <i class="fas fa-home icons"></i>
-                                        <span>Anasayfa</span>
-                                    </a>
-                                </li>
-                                <li id="Uygulamali" class="nav-parent li-element">
-                                    <a href="#!">
-                                        <i class="fab fa-product-hunt icons"></i>
-                                        <span>Uygulama Projeleri</span>
-                                    </a>
-                                </li>
-                                <li id="Dogruli" class="nav-parent li-element">
-                                    <a href="#!">
-                                        <i class="fas fa-money-bill icons"></i>
-                                        <span>Doğrudan Satış Projeleri</span>
-                                    </a>
-                                </li>
-                                <li id="istakipid" class="nav-parent li-element">
-                                    <a href="#!">
-                                        <i class="fas fa-briefcase icons"></i>
-                                        <span>İş Takip Platformu</span>
-                                    </a>
-                                </li>
-                                <li id="musteritakipid" class="nav-parent li-element">
-                                    <a href="#!">
-                                        <i class="far fa-address-book icons"></i>
-                                        <span>Müşteri Takip Platformu</span>
-                                    </a>
-                                </li>
-                                <li id="ajandaid" class="nav-parent li-element">
-                                    <a href="#!">
-                                        <i class="fas fa-calendar-alt icons"></i>
-                                        <span>Ajanda</span>
-
-                                    </a>
-                                </li>
-
-                            </ul>
-
-                        </div>
-                </div>*@
+                    <a href="#!" class="list-group-item list-group-item-action" id="ajandaid">
+                        <i class="fas fa-calendar-alt icons"></i>
+                        <span>Ajanda</span>
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="col-md-10" style="border: 1px solid green; padding: 0">
             <div class="mainpanel">
