@@ -7,80 +7,94 @@
     <link href="~/Content/Main.css" rel="stylesheet" type="text/css" />
 </head>
 
-<div class="container-fluid" style="padding: 0">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-2 leftpanel">
-            <div class="container logopanel">
-                <div class="text-center">
-                    <a href=@Url.Action("Index", "Home")>
-                        <img class="img-responsive" src="~/Images/stajyerler.png" />
-                    </a>
-                </div>
-                <button type="button" class="btn btn-light bg-light btn-block" data-toggle="collapse" data-target="#collapseMenu" aria-expanded="false" aria-controls="collapseMenu" style="box-shadow: none; font-family: Arial, Helvetica, sans-serif">
-                    <img src="~/Images/profil.png" style="height:20px; float: left; margin-top: 3px;" />
-                    <span>@(Session["Isim"] + " " + Session["Soyad"])</span>
-                    <span><i class="fas fa-caret-down" style="float:right; padding-top: 4px;"></i></span>
-                </button>
-                <div class="list-group collapse dropdown-menu-usermenu rounded" id="collapseMenu">
-                    <a class="listgroup-item list-group-item-action" href="#!" style="margin-top: 0;">
-                        <i class="fas fa-user dropicons"></i>
-                        <span>Profil</span>
-                    </a>
-                    <a class="listgroup-item list-group-item-action" href="#!" style="">
-                        <i class="fas fa-cog dropicons"></i>
-                        <span>Ayarlar</span>
-                    </a>
-                    <a class="listgroup-item list-group-item-action" href="/Home/Index">
-                        <i class="fas fa-sign-out-alt dropicons"></i>
-                        <span>Çıkış</span>
-                    </a>
-                </div>
-            </div>
-            <div class="container leftpanelinner">
-                <div id="menu" class="list-group">
-                    <a href="/Home/Category" class="list-group-item list-group-item-action" id="Menüli">
-                        <i class="fas fa-home icons"></i>
-                        <span>Anasayfa</span>
-                    </a>
-                    <a href="#!" class="list-group-item list-group-item-action" id="Uygulamali">
-                        <i class="fab fa-product-hunt icons"></i>
-                        <span>Uygulama Projeleri</span>
-                    </a>
-                    <a href="#!" class="list-group-item list-group-item-action" id="Dogruli">
-                        <i class="fas fa-money-bill icons"></i>
-                        <span>Doğrudan Satış Projeleri</span>
-                    </a>
-                    <a href="#!" class="list-group-item list-group-item-action" id="istakipid">
-                        <i class="fas fa-briefcase icons"></i>
-                        <span>İş Takip Platformu</span>
-                    </a>
-                    <a href="#!" class="list-group-item list-group-item-action" id="musteritakipid">
-                        <i class="far fa-address-book icons"></i>
-                        <span>Müşteri Takip Platformu</span>
-                    </a>
 
-                    <a href="#!" class="list-group-item list-group-item-action" id="ajandaid">
-                        <i class="fas fa-calendar-alt icons"></i>
-                        <span>Ajanda</span>
-                    </a>
-                </div>
+        <!-- Sol panel -->
+        <div class="col-md-2 leftpanel">
+                    <!-- stajyerlerCRM Logosu -->
+                    <div class="container logopanel">
+                        <div class="text-center">
+                            <a href=@Url.Action("Index", "Home")>
+                                <img class="img-logo" src="~/Images/stajyerler.png" />
+                            </a>
+                        </div>
+
+                        <!-- Kullanıcı profili bolümü -->
+                        <button type="button" class="btn btn-light bg-light btn-block" data-toggle="collapse" data-target="#collapseMenu" aria-expanded="false" aria-controls="collapseMenu" style="box-shadow: none; font-family: Arial, Helvetica, sans-serif">
+                            <img src="~/Images/profil.png" style="height:20px; float: left; margin-top: 3px;" />
+                            <span>@(Session["Isim"] + " " + Session["Soyad"])</span>
+                            <span><i class="fas fa-caret-down" style="float:right; padding-top: 4px;"></i></span>
+                        </button>
+                        <div class="list-group collapse dropdown-menu-usermenu rounded" id="collapseMenu">
+                            <a class="listgroup-item list-group-item-action" href="#!" style="margin-top: 0;">
+                                <i class="fas fa-user dropicons"></i>
+                                <span>Profil</span>
+                            </a>
+                            <a class="listgroup-item list-group-item-action" href="#!" style="">
+                                <i class="fas fa-cog dropicons"></i>
+                                <span>Ayarlar</span>
+                            </a>
+                            <a class="listgroup-item list-group-item-action" href="/Home/Index">
+                                <i class="fas fa-sign-out-alt dropicons"></i>
+                                <span>Çıkış</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sol panelin içerik bolumu -->
+                    <div class="container leftpanelinner">
+                        <div id="menu" class="list-group">
+                            <a href="/Home/Category" class="list-group-item list-group-item-action" id="Menüli">
+                                <i class="fas fa-home icons"></i>
+                                <span class="menu-item-text">Anasayfa</span>
+                            </a>
+                            <a href="#!" class="list-group-item list-group-item-action" id="Uygulamali">
+                                <i class="fab fa-product-hunt icons"></i>
+                                <span class="menu-item-text">Uygulama Projeleri</span>
+                            </a>
+                            <a href="#!" class="list-group-item list-group-item-action" id="Dogruli">
+                                <i class="fas fa-money-bill icons"></i>
+                                <span class="menu-item-text">Doğrudan Satış Projeleri</span>
+                            </a>
+                            <a href="#!" class="list-group-item list-group-item-action" id="istakipid">
+                                <i class="fas fa-briefcase icons"></i>
+                                <span class="menu-item-text">İş Takip Platformu</span>
+                            </a>
+                            <a href="#!" class="list-group-item list-group-item-action" id="musteritakipid">
+                                <i class="fas fa-address-book icons"></i>
+                                <span class="menu-item-text">Müşteri Takip Platformu</span>
+                            </a>
+                            <a href="#!" class="list-group-item list-group-item-action" id="ajandaid">
+                                <i class="fas fa-calendar-alt icons"></i>
+                                <span class="menu-item-text">Ajanda</span>
+                            </a>
+                        </div>
+                    </div>
             </div>
-        </div>
-        <div class="col-md-10" style="border: 1px solid green; padding: 0">
-            <div class="mainpanel">
+
+        <!-- Main panel and footer -->
+        <div class="col-md-10 main-container">
+
+            <!-- Main panel -->
+            <div class="container-fluid mainpanel">
                 @RenderBody()
             </div>
 
-            <div class="container text-center" style="background: #000">
-                <div class="copyrights">
-                    <p class="white-txt">
-                        stajyerler CRM © 2018
-                        <br><br>
-                        <img class="footimg" src="~/Images/stajyerler.png" alt="Logo">
-                    </p>
-                    <a class="link" href="#">İletişim</a>&nbsp
-                    <a class="link" href="#">Gizlilik Politikası</a>&nbsp
-                    <a class="link" href="#">Kullanım Koşulları</a>
+            <!-- Footer section -->
+            <div class="container-fluid text-center footer">
+                <div class="text-light">
+                    <div class="copyrights-head">
+                        <p style="margin-top: 10px;"> stajyerler CRM © 2018 </p>
+                        <div class="footimg">
+                            <img src="~/Images/stajyerler.png" alt="Logo" style="height: 50px;">
+                        </div>
+                    </div>
+                    <div class="container link-container">
+                        <a class="link" href="#">İletişim</a>&nbsp
+                        <a class="link" href="#">Gizlilik Politikası</a>&nbsp
+                        <a class="link" href="#">Kullanım Koşulları</a>
+                    </div>
                     <br><br>
                     <p class="white-txt small">
                         Tüm hakları saklıdır. stajyerler CRM© 2018
