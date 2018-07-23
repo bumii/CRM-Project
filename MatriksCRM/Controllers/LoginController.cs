@@ -15,7 +15,7 @@ namespace MatriksCRM.Controllers
         {
             if (HttpContext.Request.Cookies["cookie"] != null)
             {
-                ViewBag.Email = HttpContext.Request.Cookies["cookie"].Value;
+                ViewBag.Email = HttpContext.Request.Cookies["cookie"]["Email"];
                 return View();
             }
             else
@@ -44,7 +44,7 @@ namespace MatriksCRM.Controllers
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
             string Email = kullanici.Email;
-            string Sifre = kullanici.Sifre;
+           
 
 
             if (reader.HasRows)
