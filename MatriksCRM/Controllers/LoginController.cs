@@ -11,10 +11,17 @@ namespace MatriksCRM.Controllers
 {
     public class LoginController : Controller
     {
-
         public ActionResult Login()
         {
-            return View();
+            if (HttpContext.Request.Cookies["cookie"] != null)
+            {
+                ViewBag.Email = HttpContext.Request.Cookies["cookie"].Value;
+                return View();
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
@@ -36,7 +43,10 @@ namespace MatriksCRM.Controllers
 
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
-            
+            string Email = kullanici.Email;
+            string Sifre = kullanici.Sifre;
+
+
             if (reader.HasRows)
             {
                 while (reader.Read())
@@ -44,6 +54,19 @@ namespace MatriksCRM.Controllers
                     Session.Add("ID", reader.GetInt32(0));
                     Session.Add("Isim", reader.GetString(3));
                     Session.Add("Soyad", reader.GetString(4));
+
+                    if (kullanici.hatırla == true)
+                    {
+                        if (HttpContext.Request.Cookies["cookie"] == null)
+                        {
+                            HttpCookie cookie = new HttpCookie("cookie");
+                            cookie["Isim"] = Session["Isim"].ToString();
+                            cookie["Soyad"] = Session["Soyad"].ToString();
+                            cookie["Email"] = Email;
+                            cookie.Expires = DateTime.Now.AddDays(14);
+                            Response.Cookies.Add(cookie);
+                        }
+                    }
                 }
                 connection.Close();
                 return RedirectToAction("Index", "Home");
@@ -53,6 +76,7 @@ namespace MatriksCRM.Controllers
                 connection.Close();
                 return View();
             }
+           
         }
     }
 }

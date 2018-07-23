@@ -14,5 +14,6 @@ namespace MatriksCRM.Models
         public string Soyad { get; set; }
         public string Telefon { get; set; }
         public DateTime DogumTarihi { get; set; }
+        public bool hatırla{ get; set; }
     }
 }
