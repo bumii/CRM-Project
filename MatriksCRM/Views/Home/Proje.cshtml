@@ -1,0 +1,35 @@
+﻿@using MatriksCRM.Models
+@model List<Proje>
+@{
+    ViewBag.Title = "ProjeBolum";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="container" style="padding: 50px">
+    <table class="table table-sm table-dark">
+        <thead>
+            <tr>
+                <th class="col">Proje #</th>
+                <th class="col">Firma Adı</th>
+                <th class="col">Proje Adı</th>
+                <th class="col">Proje Yeri</th>
+                <th class="col">Teklif Tarihi</th>
+                <th class="col">Teklif İçeriği</th>
+                <th class="col">Proje Durumu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var proje in Model)
+            {
+                <tr>
+                    <th scope="row">@proje.ProjeID</th>
+                    <td>@proje.FirmaAdi</td>
+                    <td>@proje.ProjeAdi</td>
+                    <td>@proje.ProjeYeri</td>
+                    <td>@proje.TeklifTarihi</td>
+                    <td>@proje.TeklifIcerigi</td>
+                    <td>@proje.ProjeDurum</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -28,7 +28,6 @@ namespace MatriksCRM.Controllers
         public ActionResult Login(Kullanici kullanici)
         {
             string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
-
             SqlConnection connection = new SqlConnection(connString);
             
             SqlCommand command = new SqlCommand
@@ -44,8 +43,6 @@ namespace MatriksCRM.Controllers
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
             string Email = kullanici.Email;
-           
-
 
             if (reader.HasRows)
             {
@@ -76,7 +73,6 @@ namespace MatriksCRM.Controllers
                 connection.Close();
                 return View();
             }
-           
         }
     }
 }
