@@ -5,31 +5,124 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 <div class="container" style="padding: 50px">
-    <table class="table table-sm table-dark">
+
+    <table class="table table-sm table-dark table-striped table-hover table-bordered text-center">
         <thead>
             <tr>
-                <th class="col">Proje #</th>
-                <th class="col">Firma Adı</th>
-                <th class="col">Proje Adı</th>
-                <th class="col">Proje Yeri</th>
-                <th class="col">Teklif Tarihi</th>
-                <th class="col">Teklif İçeriği</th>
-                <th class="col">Proje Durumu</th>
+                <th class="col-auto">#</th>
+                <th class="col-auto">Firma Adı</th>
+                <th class="col-auto">Proje Adı</th>
+                <th class="col-auto">Proje Yeri</th>
+                <th class="col-auto">Teklif Tarihi</th>
+                <th class="col-auto">Teklif İçeriği</th>
+                <th class="col-auto">Proje Durumu</th>
+                <th class="col-auto"></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var proje in Model)
+            @for (int i = 0; i < Model.Count; i++)
             {
-                <tr>
-                    <th scope="row">@proje.ProjeID</th>
-                    <td>@proje.FirmaAdi</td>
-                    <td>@proje.ProjeAdi</td>
-                    <td>@proje.ProjeYeri</td>
-                    <td>@proje.TeklifTarihi</td>
-                    <td>@proje.TeklifIcerigi</td>
-                    <td>@proje.ProjeDurum</td>
+                <tr id="proje-@i">
+                    <th>@(i + 1)</th>
+                    <td id="firmaAdi-@i">@Model[i].FirmaAdi</td>
+                    <td id="projeAdi-@i">@Model[i].ProjeAdi</td>
+                    <td id="projeYeri-@i">@Model[i].ProjeYeri</td>
+                    <td id="teklifTarihi-@i">@Model[i].TeklifTarihi</td>
+                    <td id="teklifIcerigi">@Model[i].TeklifIcerigi</td>
+                    <td id="projeDurumu">@Model[i].ProjeDurum</td>
+                    <td>
+                        <div>
+                            <a id="@i" href="" data-toggle="modal" onclick="modifyProjects(this.id)" data-target="#modifyModal" style="margin-right: 10px;"><i class="fas fa-cogs text-warning"></i></a>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectId(this.id)" data-target="#deleteModal"><i class="fas fa-trash-alt text-danger"></i></a>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu projeyi silmek istediğinizden emin misiniz ?
+            </div>
+            <div class="modal-footer">
+                @using (Html.BeginForm())
+                {
+                    @Html.ActionLink("Sil", null, null, new { id = "deleteProject", @class = "btn btn-danger", role = "button", value = "Sil" })
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modify -->
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Proje Bilgilerini Değiştir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modal-firmaAdi">Firma Adı:</label>
+                    <input id="modal-firmaAdi" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="projeAdi">Proje Adı:</label>
+                    <input id="modal-projeAdi" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="projeYeri">Proje Yeri:</label>
+                    <input id="modal-projeYeri" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="teklifTarihi">Teklif Tarihi:</label>
+                    <input id="modal-teklifTarihi" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="teklifIcerigi">Teklif İçeriği:</label>
+                    <input id="modal-teklifIcerigi" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="projeDurum">Projenin Durumu:</label>
+                    <input id="modal-projeDurum" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function modifyProjects(id) {
+
+        var firmaAdi = "#firmaAdi-" + id
+        document.getElementById("modal-firmaAdi").value = document.getElementById('firmaAdi-' + id).innerHTML;
+        document.getElementById("modal-projeAdi").value = document.getElementById('projeAdi-' + id).innerHTML;
+        document.getElementById("modal-projeYeri").value = document.getElementById('firmaAdi-' + id).innerHTML;
+        document.getElementById("modal-firmaAdi").value = document.getElementById('firmaAdi-' + id).innerHTML;
+        document.getElementById("modal-firmaAdi").value = document.getElementById('firmaAdi-' + id).innerHTML;
+        document.getElementById("modal-projeDurum").value = document.getElementById('firmaAdi-' + id).innerHTML;
+
+    };
+
+    function sendProjectId(id) {
+        document.getElementById("deleteProject").setAttribute("href", "/Home/DeleteProject?id=" + id);
+    }
+
+</script>

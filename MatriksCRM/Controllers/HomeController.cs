@@ -46,16 +46,16 @@ namespace MatriksCRM.Controllers
 
             if (reader.HasRows)
             {
-                Proje YeniProje = new Proje();
                 while (reader.Read())
                 {
                     try
                     {
+                        Proje YeniProje = new Proje();
                         YeniProje.ProjeID = reader.GetInt32(0);
                         YeniProje.FirmaAdi = reader.GetString(1);
                         YeniProje.ProjeAdi = reader.GetString(2);
                         YeniProje.ProjeYeri = reader.GetString(3);
-                        YeniProje.TeklifTarihi = reader.GetDateTime(4);
+                        YeniProje.TeklifTarihi = reader.GetDateTime(4).ToShortDateString();
                         YeniProje.TeklifIcerigi = null;
                         YeniProje.ProjeDurum = reader.GetString(6);
                         ProjeListesi.Add(YeniProje);
@@ -68,6 +68,11 @@ namespace MatriksCRM.Controllers
                 }
             }
             return View(ProjeListesi);
+        }
+
+        public ActionResult DeleteProject(int id)
+        {
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Logout()

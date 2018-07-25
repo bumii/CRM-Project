@@ -11,7 +11,7 @@ namespace MatriksCRM.Models
         public string FirmaAdi { get; set; }
         public string ProjeAdi { get; set; }
         public string ProjeYeri { get; set; }
-        public DateTime TeklifTarihi { get; set; }
+        public string TeklifTarihi { get; set; }
         public Byte[] TeklifIcerigi { get; set; }
         public string ProjeDurum { get; set; }
         public string Bolum { get; set; }
