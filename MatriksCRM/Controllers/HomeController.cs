@@ -80,9 +80,30 @@ namespace MatriksCRM.Controllers
             return Json(returnValue);
         }
 
-        public ActionResult DeleteProject(int id)
+        [HttpPost]
+        public JsonResult DeleteProject(int id)
         {
-            return RedirectToAction("Index", "Home");
+            int retval;
+            bool returnValue=false;
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                SqlCommand command = new SqlCommand("DeleteProject", connection)
+                {
+                    CommandType = System.Data.CommandType.StoredProcedure
+                };
+                command.Parameters.AddWithValue("ProjeID", id);
+                connection.Open();
+                retval =command.ExecuteNonQuery();
+                connection.Close();
+            }
+            if (retval >= 1)
+            {
+                returnValue = true;
+ 
+            }
+            return Json(returnValue);
+
         }
 
         public ActionResult Logout()

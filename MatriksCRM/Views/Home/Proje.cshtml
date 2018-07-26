@@ -55,11 +55,9 @@
                 Bu projeyi silmek istediğinizden emin misiniz ?
             </div>
             <div class="modal-footer">
-                @using (Html.BeginForm())
-                {
-                    @Html.ActionLink("Sil", null, null, new { id = "deleteProject", @class = "btn btn-danger", role = "button", value = "Sil" })
-                }
+                <button id="deleteProject" type="button" class="btn btn-danger">Sil</button>
             </div>
+            <div id="projeSilindi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
         </div>
     </div>
 </div>
@@ -124,6 +122,7 @@
 <script>
 
     modifyProjectId = 0
+    deleteProjectId = 0;
     var projects = @Html.Raw(Json.Encode(Model));
 
     function sendProjectInfo(id) {
@@ -153,7 +152,6 @@
         };
 
         projeModified = JSON.stringify({ 'proje': proje });
-
         $.ajax({
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -165,11 +163,31 @@
 
         });
     })
+    $("#deleteProject").click(function ()
+    {
+        projeDeleted = JSON.stringify({ 'id': projects[deleteProjectId].ProjeID });
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '/Home/DeleteProject',
+            data:  projeDeleted
 
+        }).done(function (obj) {
+            var elementId = "proje-" + deleteProjectId;
+            $('#projeSilindi').show(700, function () {
+                $('#deleteModal').modal('toggle');
+                $(this).hide();
+                $("#" + elementId).hide(300, function () {
+                    document.getElementById(elementId).outerHTML = "";
+                });
+            });
+
+        });
+    })
     function sendProjectId(id) {
-        document.getElementById("deleteProject").setAttribute("href", "/Home/DeleteProject?id=" + id);
+        deleteProjectId = id;
     }
-
     $("#dropdownDurum-menu a").click(function () {
         $('#dropdownDurum').html($(this).text());
     });
