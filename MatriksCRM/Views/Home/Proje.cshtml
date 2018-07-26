@@ -32,7 +32,7 @@
                     <td id="projeDurumu">@Model[i].ProjeDurum</td>
                     <td>
                         <div>
-                            <a id="@i" href="" data-toggle="modal" onclick="modifyProjects(this.id)" data-target="#modifyModal" style="margin-right: 10px;"><i class="fas fa-cogs text-warning"></i></a>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectInfo(this.id)" data-target="#modifyModal" style="margin-right: 10px;"><i class="fas fa-cogs text-warning"></i></a>
                             <a id="@i" href="" data-toggle="modal" onclick="sendProjectId(this.id)" data-target="#deleteModal"><i class="fas fa-trash-alt text-danger"></i></a>
                         </div>
                     </td>
@@ -89,19 +89,33 @@
                 </div>
                 <div class="form-group">
                     <label for="teklifTarihi">Teklif Tarihi:</label>
-                    <input id="modal-teklifTarihi" type="text" class="form-control">
+                    <input id="modal-teklifIcerigi" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="teklifIcerigi">Teklif İçeriği:</label>
                     <input id="modal-teklifIcerigi" type="text" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="projeDurum">Projenin Durumu:</label>
-                    <input id="modal-projeDurum" type="text" class="form-control">
+                    <label>Projenin Durumu:</label>
+
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Proje Durumu<span class="caret"></span>
+                        </button>
+                        <div id="dropdownDurum-menu" class="dropdown-menu" aria-labelledby="dropdownDurum">
+                            <a class="dropdown-item" href="#">Teklif Asamasinda</a>
+                            <a class="dropdown-item" href="#">Teklif Degerlendirme Sürecinde</a>
+                            <a class="dropdown-item" href="#">Teklif Sozlesme Asamasinda</a>
+                            <a class="dropdown-item" href="#">Proje Alindi</a>
+                            <a class="dropdown-item" href="#">Proje Iptal Oldu</a>
+                            <a class="dropdown-item" href="#">Teklif Kabul Edilmedi</a>
+                            <a class="dropdown-item" href="#">Proje Ertelendi</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Kaydet</button>
+                <button id="modifyProject" type="button" class="btn btn-primary">Kaydet</button>
             </div>
         </div>
     </div>
@@ -109,20 +123,55 @@
 
 <script>
 
-    function modifyProjects(id) {
+    modifyProjectId = 0
+    var projects = @Html.Raw(Json.Encode(Model));
 
-        var firmaAdi = "#firmaAdi-" + id
-        document.getElementById("modal-firmaAdi").value = document.getElementById('firmaAdi-' + id).innerHTML;
-        document.getElementById("modal-projeAdi").value = document.getElementById('projeAdi-' + id).innerHTML;
-        document.getElementById("modal-projeYeri").value = document.getElementById('firmaAdi-' + id).innerHTML;
-        document.getElementById("modal-firmaAdi").value = document.getElementById('firmaAdi-' + id).innerHTML;
-        document.getElementById("modal-firmaAdi").value = document.getElementById('firmaAdi-' + id).innerHTML;
-        document.getElementById("modal-projeDurum").value = document.getElementById('firmaAdi-' + id).innerHTML;
+    function sendProjectInfo(id) {
 
+        modifyProjectId = id;
+
+        document.getElementById("modal-firmaAdi").value = projects[id].FirmaAdi;
+        document.getElementById("modal-projeAdi").value = projects[id].ProjeAdi;
+        document.getElementById("modal-projeYeri").value = projects[id].ProjeYeri;
+        document.getElementById("modal-teklifTarihi").value = projects[id].TeklifTarihi
+        document.getElementById("modal-teklifIcerigi").value = null;
+
+        document.getElementById("dropdownDurum").html(projects[id].ProjeDurum);
     };
+
+    $("#modifyProject").click(function () {
+
+        var proje = {
+            ProjeID: projects[modifyProjectId].ProjeID,
+            FirmaAdi: document.getElementById("modal-firmaAdi").value,
+            ProjeAdi: document.getElementById("modal-projeAdi").value,
+            ProjeYeri: document.getElementById("modal-projeYeri").value,
+            TeklifTarihi: $document.getElementById("modal-teklifTarihi").value,
+            TeklifIcerigi: null,
+            ProjeDurum: document.getElementById('dropdownDurum').innerHTML,
+            Bolum : "Satis"
+        };
+
+        projeModified = JSON.stringify({ 'proje': proje });
+
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '/Home/ModifyProject',
+            data: projeModified,
+
+        }).done(function (obj) {
+
+        });
+    })
 
     function sendProjectId(id) {
         document.getElementById("deleteProject").setAttribute("href", "/Home/DeleteProject?id=" + id);
     }
+
+    $("#dropdownDurum-menu a").click(function () {
+        $('#dropdownDurum').html($(this).text());
+    });
 
 </script>

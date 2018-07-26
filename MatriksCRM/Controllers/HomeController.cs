@@ -70,6 +70,16 @@ namespace MatriksCRM.Controllers
             return View(ProjeListesi);
         }
 
+        [HttpPost]
+        public JsonResult ModifyProject(Proje proje)
+        {
+            bool returnValue = false;
+
+
+
+            return Json(returnValue);
+        }
+
         public ActionResult DeleteProject(int id)
         {
             return RedirectToAction("Index", "Home");
