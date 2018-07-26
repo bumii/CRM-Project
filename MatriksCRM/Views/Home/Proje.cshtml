@@ -89,7 +89,7 @@
                 </div>
                 <div class="form-group">
                     <label for="teklifTarihi">Teklif Tarihi:</label>
-                    <input id="modal-teklifIcerigi" type="text" class="form-control">
+                    <input id="modal-teklifTarihi" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="teklifIcerigi">Teklif İçeriği:</label>
@@ -136,7 +136,7 @@
         document.getElementById("modal-teklifTarihi").value = projects[id].TeklifTarihi
         document.getElementById("modal-teklifIcerigi").value = null;
 
-        document.getElementById("dropdownDurum").html(projects[id].ProjeDurum);
+        $("#dropdownDurum").html(projects[id].ProjeDurum);
     };
 
     $("#modifyProject").click(function () {
@@ -146,7 +146,7 @@
             FirmaAdi: document.getElementById("modal-firmaAdi").value,
             ProjeAdi: document.getElementById("modal-projeAdi").value,
             ProjeYeri: document.getElementById("modal-projeYeri").value,
-            TeklifTarihi: $document.getElementById("modal-teklifTarihi").value,
+            TeklifTarihi: document.getElementById("modal-teklifTarihi").value,
             TeklifIcerigi: null,
             ProjeDurum: document.getElementById('dropdownDurum').innerHTML,
             Bolum : "Satis"
