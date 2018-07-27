@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -56,7 +57,7 @@ namespace MatriksCRM.Controllers
                         YeniProje.ProjeAdi = reader.GetString(2);
                         YeniProje.ProjeYeri = reader.GetString(3);
                         YeniProje.TeklifTarihi = reader.GetDateTime(4).ToShortDateString();
-                        YeniProje.TeklifIcerigi = null;
+                        YeniProje.TeklifIcerigi = reader.GetString(5);
                         YeniProje.ProjeDurum = reader.GetString(6);
                         ProjeListesi.Add(YeniProje);
                     }
@@ -64,20 +65,25 @@ namespace MatriksCRM.Controllers
                     {
                         Console.WriteLine("A null value has reached");
                     }
-                    
+
                 }
             }
+            ViewBag.Bolum = bolum;
             return View(ProjeListesi);
         }
 
+        #region Project Operations
+
         [HttpPost]
-        public JsonResult ModifyProject(Proje proje)
+        public JsonResult CreateProject(Proje proje, HttpPostedFileBase file)
         {
-            bool returnValue = false;
+            return Json(AddModifyParameters(proje, file, "AddProject"));
+        }
 
-
-
-            return Json(returnValue);
+        [HttpPost]
+        public JsonResult ModifyProject(Proje proje, HttpPostedFileBase file)
+        {
+            return Json(AddModifyParameters(proje, file, "ProjeDegistir"));
         }
 
         [HttpPost]
@@ -88,7 +94,7 @@ namespace MatriksCRM.Controllers
             string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connString))
             {
-                SqlCommand command = new SqlCommand("DeleteProject", connection)
+                SqlCommand command = new SqlCommand("ProjeSil", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure
                 };
@@ -105,6 +111,87 @@ namespace MatriksCRM.Controllers
             return Json(returnValue);
 
         }
+
+
+        public bool AddModifyParameters(Proje proje, HttpPostedFileBase file, string procedureName)
+        {
+            bool returnValue = false;
+
+            MemoryStream memoryStream = new MemoryStream();
+            file.InputStream.CopyTo(memoryStream);
+            byte[] teklifIcerigi = memoryStream.ToArray();
+
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            SqlConnection connection = new SqlConnection(connString);
+
+            SqlCommand command = new SqlCommand
+            {
+                Connection = connection,
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandText = procedureName
+            };
+
+            command.Parameters.Add(new SqlParameter("@KullaniciID", Session["ID"]));
+
+            if (procedureName == "ProjeDegistir")
+            {
+                command.Parameters.Add(new SqlParameter("@ProjeID", proje.ProjeID));
+            }
+            command.Parameters.Add(new SqlParameter("@FirmaAdi", proje.FirmaAdi));
+            command.Parameters.Add(new SqlParameter("@ProjeAdi", proje.ProjeAdi));
+            command.Parameters.Add(new SqlParameter("@ProjeYeri", proje.ProjeYeri));
+
+            DateTime TeklifTarihi = DateTime.Parse(proje.TeklifTarihi);
+            command.Parameters.Add(new SqlParameter("@TeklifTarihi", TeklifTarihi));
+            command.Parameters.Add(new SqlParameter("@IcerikAdi", file.FileName));
+
+            command.Parameters.Add(new SqlParameter("@TeklifIcerigi", teklifIcerigi));
+            command.Parameters.Add(new SqlParameter("@ProjeDurum", proje.ProjeDurum));
+            command.Parameters.Add(new SqlParameter("@Bolum", proje.Bolum));
+
+            connection.Open();
+            if (command.ExecuteNonQuery() != 0)
+            {
+                returnValue = true;
+            }
+
+            return returnValue;
+        }
+
+        #endregion
+
+        
+        //public FileStreamResult TeklifIcerigiIndir(int projeId)
+        //{
+        //    string fileName = "";
+        //    byte[] fileContent;
+        //    MemoryStream stream = new MemoryStream();
+
+        //    string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+        //    SqlConnection connection = new SqlConnection(connString);
+
+        //    SqlCommand command = new SqlCommand
+        //    {
+        //        Connection = connection,
+        //        CommandType = System.Data.CommandType.StoredProcedure,
+        //        CommandText = "TeklifIcerigiIndir"
+        //    };
+
+        //    command.Parameters.Add(new SqlParameter("@ProjeID", projeId));
+
+        //    connection.Open();
+        //    SqlDataReader reader = command.ExecuteReader();
+
+        //    if (reader.HasRows)
+        //    {
+        //        while (reader.Read())
+        //        {
+        //            fileName = reader.GetString(0);
+        //            stream.Write(reader.GetStream(1), 0, reader.GetStream(1).Length);
+        //            fileContent = reader.GetBytes(1);
+        //        }
+        //    }
+        //}
 
         public ActionResult Logout()
         {

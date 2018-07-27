@@ -4,8 +4,11 @@
     ViewBag.Title = "ProjeBolum";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-<div class="container" style="padding: 50px">
 
+<div class="container" style="padding: 50px">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button id="createProject" type="button" data-toggle="modal" data-target="#createModal" class="btn btn-dark" style="border-radius: 0">Proje Ekle</button>
+    </div>
     <table class="table table-sm table-dark table-striped table-hover table-bordered text-center">
         <thead>
             <tr>
@@ -19,16 +22,16 @@
                 <th class="col-auto"></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tableBody">
             @for (int i = 0; i < Model.Count; i++)
             {
                 <tr id="proje-@i">
-                    <th>@(i + 1)</th>
+                    <th class="rowNumber">@(i + 1)</th>
                     <td id="firmaAdi-@i">@Model[i].FirmaAdi</td>
                     <td id="projeAdi-@i">@Model[i].ProjeAdi</td>
                     <td id="projeYeri-@i">@Model[i].ProjeYeri</td>
                     <td id="teklifTarihi-@i">@Model[i].TeklifTarihi</td>
-                    <td id="teklifIcerigi">@Model[i].TeklifIcerigi</td>
+                    <td id="teklifIcerigi"><a href="" class="btn btn-dark">@Model[i].TeklifIcerigi</a></td>
                     <td id="projeDurumu">@Model[i].ProjeDurum</td>
                     <td>
                         <div>
@@ -72,49 +75,108 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="modal-firmaAdi">Firma Adı:</label>
-                    <input id="modal-firmaAdi" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="projeAdi">Proje Adı:</label>
-                    <input id="modal-projeAdi" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="projeYeri">Proje Yeri:</label>
-                    <input id="modal-projeYeri" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="teklifTarihi">Teklif Tarihi:</label>
-                    <input id="modal-teklifTarihi" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="teklifIcerigi">Teklif İçeriği:</label>
-                    <input id="modal-teklifIcerigi" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Projenin Durumu:</label>
-
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Proje Durumu<span class="caret"></span>
-                        </button>
-                        <div id="dropdownDurum-menu" class="dropdown-menu" aria-labelledby="dropdownDurum">
-                            <a class="dropdown-item" href="#">Teklif Asamasinda</a>
-                            <a class="dropdown-item" href="#">Teklif Degerlendirme Sürecinde</a>
-                            <a class="dropdown-item" href="#">Teklif Sozlesme Asamasinda</a>
-                            <a class="dropdown-item" href="#">Proje Alindi</a>
-                            <a class="dropdown-item" href="#">Proje Iptal Oldu</a>
-                            <a class="dropdown-item" href="#">Teklif Kabul Edilmedi</a>
-                            <a class="dropdown-item" href="#">Proje Ertelendi</a>
+            <form id="modifyForm" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modal-firmaAdi">Firma Adı:</label>
+                        <input id="modal-firmaAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeAdi">Proje Adı:</label>
+                        <input id="modal-projeAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeYeri">Proje Yeri:</label>
+                        <input id="modal-projeYeri" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teklifTarihi">Teklif Tarihi:</label>
+                        <input id="modal-teklifTarihi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teklifIcerigi">Teklif İçeriği:</label>
+                        <input id="modal-teklifIcerigi" type="file" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Projenin Durumu:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Proje Durumu<span class="caret"></span>
+                            </button>
+                            <div id="dropdownDurum-menu" class="dropdown-menu" aria-labelledby="dropdownDurum">
+                                <a class="dropdown-item" href="#">Teklif Asamasinda</a>
+                                <a class="dropdown-item" href="#">Teklif Degerlendirme Sürecinde</a>
+                                <a class="dropdown-item" href="#">Teklif Sozlesme Asamasinda</a>
+                                <a class="dropdown-item" href="#">Proje Alindi</a>
+                                <a class="dropdown-item" href="#">Proje Iptal Oldu</a>
+                                <a class="dropdown-item" href="#">Teklif Kabul Edilmedi</a>
+                                <a class="dropdown-item" href="#">Proje Ertelendi</a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button id="modifyProject" type="button" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Create-->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Yeni Proje Oluştur</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-footer">
-                <button id="modifyProject" type="button" class="btn btn-primary">Kaydet</button>
-            </div>
+            <form id="createForm" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modal-firmaAdi">Firma Adı:</label>
+                        <input id="create-firmaAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeAdi">Proje Adı:</label>
+                        <input id="create-projeAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeYeri">Proje Yeri:</label>
+                        <input id="create-projeYeri" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teklifTarihi">Teklif Tarihi:</label>
+                        <input id="create-teklifTarihi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teklifIcerigi">Teklif İçeriği:</label>
+                        <input id="create-teklifIcerigi" type="file" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Projenin Durumu:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="createDropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Proje Durumu<span class="caret"></span>
+                            </button>
+                            <div id="dropdownDurum-create" class="dropdown-menu" aria-labelledby="createDropdownDurum">
+                                <a class="dropdown-item" href="#">Teklif Asamasinda</a>
+                                <a class="dropdown-item" href="#">Teklif Degerlendirme Sürecinde</a>
+                                <a class="dropdown-item" href="#">Teklif Sozlesme Asamasinda</a>
+                                <a class="dropdown-item" href="#">Proje Alindi</a>
+                                <a class="dropdown-item" href="#">Proje Iptal Oldu</a>
+                                <a class="dropdown-item" href="#">Teklif Kabul Edilmedi</a>
+                                <a class="dropdown-item" href="#">Proje Ertelendi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-createProject" type="button" class="btn btn-primary">Oluştur</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -138,31 +200,68 @@
         $("#dropdownDurum").html(projects[id].ProjeDurum);
     };
 
+    $('#modal-createProject').click(function () {
+        var formData = new FormData();
+        var files = $("#create-teklifIcerigi").get(0).files;
+
+        formData.append("FirmaAdi", $("#create-firmaAdi").val());
+        formData.append("ProjeAdi", $("#create-projeAdi").val());
+        formData.append("ProjeYeri", $("#create-projeYeri").val());
+        formData.append("TeklifTarihi", $("#create-teklifTarihi").val());
+        formData.append("ProjeDurum", document.getElementById('createDropdownDurum').innerHTML);
+        formData.append("Bolum", "@ViewBag.Bolum")
+        formData.append("file", files[0]);
+        formData.append("TeklifIcerigi", files[0].name);
+
+        for (var p of formData) {
+            console.log(p);
+        }
+
+        $.ajax({
+            url: '/Home/CreateProject',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                alert(data)
+            },
+        });
+    });
+
     $("#modifyProject").click(function () {
 
-        var proje = {
-            ProjeID: projects[modifyProjectId].ProjeID,
-            FirmaAdi: document.getElementById("modal-firmaAdi").value,
-            ProjeAdi: document.getElementById("modal-projeAdi").value,
-            ProjeYeri: document.getElementById("modal-projeYeri").value,
-            TeklifTarihi: document.getElementById("modal-teklifTarihi").value,
-            TeklifIcerigi: null,
-            ProjeDurum: document.getElementById('dropdownDurum').innerHTML,
-            Bolum : "Satis"
-        };
+        var formData = new FormData();
+        var files = $("#modal-teklifIcerigi").get(0).files;
 
-        projeModified = JSON.stringify({ 'proje': proje });
+        formData.append("ProjeID", projects[modifyProjectId].ProjeID);
+        formData.append("FirmaAdi", $("#modal-firmaAdi").val());
+        formData.append("ProjeAdi", $("#modal-projeAdi").val());
+        formData.append("ProjeYeri", $("#modal-projeYeri").val());
+        formData.append("TeklifTarihi", $("#modal-teklifTarihi").val());
+        formData.append("ProjeDurum", document.getElementById('dropdownDurum').innerHTML);
+        formData.append("Bolum", "@ViewBag.Bolum")
+        formData.append("file", files[0]);
+        formData.append("TeklifIcerigi", files[0].name);
+
+        for (var p of formData) {
+            console.log(p);
+        }
+
         $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
             url: '/Home/ModifyProject',
-            data: projeModified,
-
-        }).done(function (obj) {
-
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                alert(data)
+            },
         });
-    })
+    });
+
     $("#deleteProject").click(function ()
     {
         projeDeleted = JSON.stringify({ 'id': projects[deleteProjectId].ProjeID });
@@ -174,22 +273,31 @@
             data:  projeDeleted
 
         }).done(function (obj) {
+            var i = 0;
             var elementId = "proje-" + deleteProjectId;
-            $('#projeSilindi').show(700, function () {
+            $('#projeSilindi').show(500, function () {
                 $('#deleteModal').modal('toggle');
                 $(this).hide();
-                $("#" + elementId).hide(300, function () {
-                    document.getElementById(elementId).outerHTML = "";
+                $('#deleteModal').on('hidden.bs.modal', function () {
+                    $("#" + elementId).hide(300, function () {
+                        document.getElementById(elementId).outerHTML = "";
+                    });
                 });
             });
 
         });
     })
+
     function sendProjectId(id) {
         deleteProjectId = id;
     }
+
     $("#dropdownDurum-menu a").click(function () {
         $('#dropdownDurum').html($(this).text());
     });
 
+    $("#dropdownDurum-create a").click(function () {
+        $('#createDropdownDurum').html($(this).text());
+    });
+    
 </script>

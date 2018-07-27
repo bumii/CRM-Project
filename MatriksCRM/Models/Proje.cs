@@ -16,7 +16,7 @@ namespace MatriksCRM.Models
         [DataType(DataType.Date)]
         public string TeklifTarihi { get; set; }
 
-        public Byte[] TeklifIcerigi { get; set; }
+        public string TeklifIcerigi { get; set; }
         public string ProjeDurum { get; set; }
         public string Bolum { get; set; }
     }
