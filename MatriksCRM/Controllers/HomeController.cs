@@ -90,7 +90,7 @@ namespace MatriksCRM.Controllers
         public JsonResult DeleteProject(int id)
         {
             int retval;
-            bool returnValue=false;
+            bool returnValue = false;
             string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connString))
             {
@@ -100,13 +100,13 @@ namespace MatriksCRM.Controllers
                 };
                 command.Parameters.AddWithValue("ProjeID", id);
                 connection.Open();
-                retval =command.ExecuteNonQuery();
+                retval = command.ExecuteNonQuery();
                 connection.Close();
             }
             if (retval >= 1)
             {
                 returnValue = true;
- 
+
             }
             return Json(returnValue);
 
@@ -160,38 +160,58 @@ namespace MatriksCRM.Controllers
 
         #endregion
 
-        
-        //public FileStreamResult TeklifIcerigiIndir(int projeId)
-        //{
-        //    string fileName = "";
-        //    byte[] fileContent;
-        //    MemoryStream stream = new MemoryStream();
+        public FileStreamResult TeklifIcerigiIndir(int projeId)
+        {
+            string fileName = "";
+            Stream stream;
+            FileStreamResult streamResult;
 
-        //    string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
-        //    SqlConnection connection = new SqlConnection(connString);
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            SqlConnection connection = new SqlConnection(connString);
 
-        //    SqlCommand command = new SqlCommand
-        //    {
-        //        Connection = connection,
-        //        CommandType = System.Data.CommandType.StoredProcedure,
-        //        CommandText = "TeklifIcerigiIndir"
-        //    };
+            SqlCommand command = new SqlCommand
+            {
+                Connection = connection,
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandText = "TeklifIcerigiIndir"
+            };
 
-        //    command.Parameters.Add(new SqlParameter("@ProjeID", projeId));
+            command.Parameters.Add(new SqlParameter("@ProjeID", projeId));
 
-        //    connection.Open();
-        //    SqlDataReader reader = command.ExecuteReader();
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
 
-        //    if (reader.HasRows)
-        //    {
-        //        while (reader.Read())
-        //        {
-        //            fileName = reader.GetString(0);
-        //            stream.Write(reader.GetStream(1), 0, reader.GetStream(1).Length);
-        //            fileContent = reader.GetBytes(1);
-        //        }
-        //    }
-        //}
+            if (reader.HasRows)
+            {
+                reader.Read();
+
+                fileName = reader.GetString(0);
+                stream = reader.GetStream(1);
+                string fileNameExtension = Path.GetExtension(fileName);
+
+                if (Path.GetExtension(fileName) == ".pdf")
+                {
+                    streamResult = new FileStreamResult(stream, "application/pdf");
+                }
+                else if (Path.GetExtension(fileName) == ".xls")
+                {
+                    streamResult = new FileStreamResult(stream, "application/vnd.ms-excel");
+                }
+                else if (Path.GetExtension(fileName) == ".xlsx")
+                {
+                    streamResult = new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                }
+                else
+                {
+                    return null;
+                }
+
+                streamResult.FileDownloadName = fileName;
+                return streamResult;
+            }
+
+            return null;
+        }
 
         public ActionResult Logout()
         {
