@@ -178,6 +178,7 @@
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\Home\Proje.cshtml" />
+    <Content Include="Views\Home\Ajanda.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

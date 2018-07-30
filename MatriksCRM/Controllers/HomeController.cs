@@ -219,5 +219,11 @@ namespace MatriksCRM.Controllers
 
             return RedirectToAction("Login", "Login");
         }
+        public ActionResult Ajanda()
+        {
+            
+
+            return View();
+        }
     }
 }
