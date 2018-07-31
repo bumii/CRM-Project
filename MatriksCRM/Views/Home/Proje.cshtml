@@ -25,18 +25,18 @@
         <tbody id="tableBody">
             @for (int i = 0; i < Model.Count; i++)
             {
-                <tr id="proje-@i">
+                <tr id="proje-@Model[i].ProjeID">
                     <th class="rowNumber">@(i + 1)</th>
                     <td id="firmaAdi-@i">@Model[i].FirmaAdi</td>
                     <td id="projeAdi-@i">@Model[i].ProjeAdi</td>
                     <td id="projeYeri-@i">@Model[i].ProjeYeri</td>
                     <td id="teklifTarihi-@i">@Model[i].TeklifTarihi</td>
-                    <td id="teklifIcerigi"><a href="/Home/TeklifIcerigiIndir?projeId=@Model[i].ProjeID" class="btn btn-dark">@Model[i].TeklifIcerigi</a></td>
+                    <td id="teklifIcerigi-@i"><a href="/Home/TeklifIcerigiIndir?projeId=@Model[i].ProjeID" class="btn btn-dark">@Model[i].TeklifIcerigi</a></td>
                     <td id="projeDurumu">@Model[i].ProjeDurum</td>
                     <td>
                         <div>
-                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectInfo(this.id)" data-target="#modifyModal" style="margin-right: 10px;"><i class="fas fa-cogs text-warning"></i></a>
-                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectId(this.id)" data-target="#deleteModal"><i class="fas fa-trash-alt text-danger"></i></a>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectInfo(@Model[i].ProjeID)" data-target="#modifyModal" style="margin-right: 10px;"><i class="fas fa-cogs text-warning"></i></a>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectId(@Model[i].ProjeID)" data-target="#deleteModal"><i class="fas fa-trash-alt text-danger"></i></a>
                         </div>
                     </td>
                 </tr>
@@ -177,6 +177,7 @@
                     <button id="modal-createProject" type="button" class="btn btn-primary">Oluştur</button>
                 </div>
             </form>
+            <div id="projeEklendi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
         </div>
     </div>
 </div>
@@ -185,7 +186,9 @@
 
     modifyProjectId = 0
     deleteProjectId = 0;
+    count = @Model.Count;
     var projects = @Html.Raw(Json.Encode(Model));
+
 
     function sendProjectInfo(id) {
 
@@ -209,13 +212,9 @@
         formData.append("ProjeYeri", $("#create-projeYeri").val());
         formData.append("TeklifTarihi", $("#create-teklifTarihi").val());
         formData.append("ProjeDurum", document.getElementById('createDropdownDurum').innerHTML);
-        formData.append("Bolum", "@ViewBag.Bolum")
-        formData.append("file", files[0]);
+        formData.append("Bolum", "@ViewBag.Bolum");
         formData.append("TeklifIcerigi", files[0].name);
-
-        for (var p of formData) {
-            console.log(p);
-        }
+        formData.append("file", files[0]);
 
         $.ajax({
             url: '/Home/CreateProject',
@@ -224,8 +223,35 @@
             cache: false,
             processData: false,
             contentType: false,
-            success: function (data) {
-                alert(data)
+            success: function (id) {
+                var newProject = "<tr id=proje-" + id + " style='display: none'>" +
+                    "<th class=rowNumber>" + (count + 1) + "</th>" +
+                    "<td id=firmaAdi-" + count + ">" + formData.get("FirmaAdi") + "</td>" +
+                    "<td id=projeAdi-" + count + ">" + formData.get("ProjeAdi") + "</td>" +
+                    "<td id=projeYeri-" + count + ">" + formData.get("ProjeYeri") + "</td>" +
+                    "<td id=teklifTarihi-" + count + ">" + formData.get("TeklifTarihi") + "</td>" +
+                    "<td id=teklifIcerigi-" + count + "><a href=/Home/TeklifIcerigiIndir?projeId=" + id + " class='btn btn-dark'>" + formData.get("TeklifIcerigi") + "</a></td>" +
+                    "<td id=projeDurumu-" + count + ">" + formData.get("ProjeDurum") + "</td>" +
+                    "<td>" +
+                    "<div>" +
+                    "<a id='" + count + "'href= '' data-toggle='modal' onclick=sendProjectInfo(" + id + ") data-target='#modifyModal' style='margin-right: 10px;'><i class='fas fa-cogs text-warning'></i ></a>" +
+                    "<a id='" + count + "' href='' data-toggle='modal' onclick='sendProjectId(" + id + ")' data-target='#deleteModal'><i class='fas fa-trash-alt text-danger'></i></a>" +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>";
+                $("#tableBody").append(newProject);
+
+                projeId = "#proje-" + id;
+
+                $('#projeEklendi').show(500, function () {
+                    $('#createModal').modal('toggle');
+                    $(this).hide();
+                    $('#createModal').on('hidden.bs.modal', function () {
+                        $(projeId).show(300);
+                    });
+                });
+
+                count = count + 1;
             },
         });
     });
@@ -235,7 +261,7 @@
         var formData = new FormData();
         var files = $("#modal-teklifIcerigi").get(0).files;
 
-        formData.append("ProjeID", projects[modifyProjectId].ProjeID);
+        formData.append("ProjeID", modifyProjectId);
         formData.append("FirmaAdi", $("#modal-firmaAdi").val());
         formData.append("ProjeAdi", $("#modal-projeAdi").val());
         formData.append("ProjeYeri", $("#modal-projeYeri").val());
@@ -244,10 +270,6 @@
         formData.append("Bolum", "@ViewBag.Bolum")
         formData.append("file", files[0]);
         formData.append("TeklifIcerigi", files[0].name);
-
-        for (var p of formData) {
-            console.log(p);
-        }
 
         $.ajax({
             url: '/Home/ModifyProject',
@@ -262,31 +284,30 @@
         });
     });
 
-    $("#deleteProject").click(function ()
-    {
-        projeDeleted = JSON.stringify({ 'id': projects[deleteProjectId].ProjeID });
+    $("#deleteProject").click(function () {
+        projeDeleted = JSON.stringify({ 'id': deleteProjectId });
         $.ajax({
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             type: 'POST',
             url: '/Home/DeleteProject',
-            data:  projeDeleted
+            data: projeDeleted
 
         }).done(function (obj) {
             var i = 0;
-            var elementId = "proje-" + deleteProjectId;
+            var projeId = "proje-" + deleteProjectId;
             $('#projeSilindi').show(500, function () {
                 $('#deleteModal').modal('toggle');
                 $(this).hide();
                 $('#deleteModal').on('hidden.bs.modal', function () {
-                    $("#" + elementId).hide(300, function () {
-                        document.getElementById(elementId).outerHTML = "";
+                    $("#" + projeId).hide(300, function () {
+                        document.getElementById(projeId).outerHTML = "";
                     });
                 });
             });
-
+            count = count - 1;
         });
-    })
+    });
 
     function sendProjectId(id) {
         deleteProjectId = id;
@@ -299,5 +320,5 @@
     $("#dropdownDurum-create a").click(function () {
         $('#createDropdownDurum').html($(this).text());
     });
-    
+
 </script>

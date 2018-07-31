@@ -113,10 +113,8 @@ namespace MatriksCRM.Controllers
         }
 
 
-        public bool AddModifyParameters(Proje proje, HttpPostedFileBase file, string procedureName)
+        public int AddModifyParameters(Proje proje, HttpPostedFileBase file, string procedureName)
         {
-            bool returnValue = false;
-
             MemoryStream memoryStream = new MemoryStream();
             file.InputStream.CopyTo(memoryStream);
             byte[] teklifIcerigi = memoryStream.ToArray();
@@ -149,13 +147,30 @@ namespace MatriksCRM.Controllers
             command.Parameters.Add(new SqlParameter("@ProjeDurum", proje.ProjeDurum));
             command.Parameters.Add(new SqlParameter("@Bolum", proje.Bolum));
 
-            connection.Open();
-            if (command.ExecuteNonQuery() != 0)
+            if (procedureName == "ProjeDegistir")
             {
-                returnValue = true;
+                connection.Open();
+                int effectedRows = command.ExecuteNonQuery();
+                if (effectedRows != 0)
+                {
+                    return effectedRows;
+                }
             }
 
-            return returnValue;
+            if (procedureName == "AddProject")
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    int projeId = reader.GetInt32(0);
+                    connection.Close();
+                    return projeId;
+                }
+            }
+
+            return 0;
         }
 
         #endregion
@@ -221,7 +236,7 @@ namespace MatriksCRM.Controllers
         }
         public ActionResult Ajanda()
         {
-            
+
 
             return View();
         }
