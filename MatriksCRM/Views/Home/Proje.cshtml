@@ -118,6 +118,7 @@
                 <div class="modal-footer">
                     <button id="modifyProject" type="button" class="btn btn-primary">Kaydet</button>
                 </div>
+                <div id="projeDegistirildi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
             </form>
         </div>
     </div>
@@ -187,20 +188,18 @@
     modifyProjectId = 0
     deleteProjectId = 0;
     count = @Model.Count;
-    var projects = @Html.Raw(Json.Encode(Model));
-
 
     function sendProjectInfo(id) {
 
         modifyProjectId = id;
 
-        document.getElementById("modal-firmaAdi").value = projects[id].FirmaAdi;
-        document.getElementById("modal-projeAdi").value = projects[id].ProjeAdi;
-        document.getElementById("modal-projeYeri").value = projects[id].ProjeYeri;
-        document.getElementById("modal-teklifTarihi").value = projects[id].TeklifTarihi
+        document.getElementById("modal-firmaAdi").value = document.getElementById('proje-' + id).getElementsByTagName('td')[0].innerHTML;
+        document.getElementById("modal-projeAdi").value = document.getElementById('proje-' + id).getElementsByTagName('td')[1].innerHTML;
+        document.getElementById("modal-projeYeri").value = document.getElementById('proje-' + id).getElementsByTagName('td')[2].innerHTML;
+        document.getElementById("modal-teklifTarihi").value = document.getElementById('proje-' + id).getElementsByTagName('td')[3].innerHTML;
         document.getElementById("modal-teklifIcerigi").value = null;
 
-        $("#dropdownDurum").html(projects[id].ProjeDurum);
+        $("#dropdownDurum").html(document.getElementById('proje-' + id).getElementsByTagName('td')[5].innerHTML);
     };
 
     $('#modal-createProject').click(function () {
@@ -267,9 +266,14 @@
         formData.append("ProjeYeri", $("#modal-projeYeri").val());
         formData.append("TeklifTarihi", $("#modal-teklifTarihi").val());
         formData.append("ProjeDurum", document.getElementById('dropdownDurum').innerHTML);
-        formData.append("Bolum", "@ViewBag.Bolum")
+        formData.append("Bolum", "@ViewBag.Bolum");
         formData.append("file", files[0]);
-        formData.append("TeklifIcerigi", files[0].name);
+        if (files.length === 0) {
+            formData.append("TeklifIcerigi", null);
+        }
+        else {
+            formData.append("TeklifIcerigi", files[0].name);
+        }
 
         $.ajax({
             url: '/Home/ModifyProject',
@@ -279,7 +283,26 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                alert(data)
+                $('#projeDegistirildi').show(500, function () {
+                    $('#modifyModal').modal('toggle');
+                    $(this).hide();
+                    $('#modifyModal').on('hidden.bs.modal', function () {
+                        $("#proje-" + modifyProjectId).fadeOut(300, function () {
+                            modifiedProject = document.getElementById('proje-' + modifyProjectId);
+
+                            modifiedProject.getElementsByTagName('td')[0].innerHTML = formData.get("FirmaAdi");
+                            modifiedProject.getElementsByTagName('td')[1].innerHTML = formData.get("ProjeAdi");
+                            modifiedProject.getElementsByTagName('td')[2].innerHTML = formData.get("ProjeYeri");
+                            modifiedProject.getElementsByTagName('td')[3].innerHTML = formData.get("TeklifTarihi");
+                            if (files.length !== 0) {
+                                modifiedProject.getElementsByTagName('td')[4].innerHTML = formData.get("TeklifIcerigi");
+                            }
+
+                            modifiedProject.getElementsByTagName('td')[5].innerHTML = formData.get("ProjeDurum");
+                            $("#proje-" + modifyProjectId).fadeIn(300);
+                        });
+                    });
+                });
             },
         });
     });

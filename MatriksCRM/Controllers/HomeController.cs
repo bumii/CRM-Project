@@ -115,9 +115,20 @@ namespace MatriksCRM.Controllers
 
         public int AddModifyParameters(Proje proje, HttpPostedFileBase file, string procedureName)
         {
-            MemoryStream memoryStream = new MemoryStream();
-            file.InputStream.CopyTo(memoryStream);
-            byte[] teklifIcerigi = memoryStream.ToArray();
+            byte[] teklifIcerigi = null;
+            string fileName = "";
+
+            if (file != null)
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                file.InputStream.CopyTo(memoryStream);
+                teklifIcerigi = memoryStream.ToArray();
+                fileName = file.FileName;
+            }
+            else
+            {
+                teklifIcerigi = new byte[0];
+            }
 
             string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
             SqlConnection connection = new SqlConnection(connString);
@@ -141,9 +152,10 @@ namespace MatriksCRM.Controllers
 
             DateTime TeklifTarihi = DateTime.Parse(proje.TeklifTarihi);
             command.Parameters.Add(new SqlParameter("@TeklifTarihi", TeklifTarihi));
-            command.Parameters.Add(new SqlParameter("@IcerikAdi", file.FileName));
+            command.Parameters.Add(new SqlParameter("@IcerikAdi", fileName));
 
             command.Parameters.Add(new SqlParameter("@TeklifIcerigi", teklifIcerigi));
+
             command.Parameters.Add(new SqlParameter("@ProjeDurum", proje.ProjeDurum));
             command.Parameters.Add(new SqlParameter("@Bolum", proje.Bolum));
 
