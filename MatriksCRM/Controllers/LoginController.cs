@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
 using System.Data.SqlClient;
+using MatriksCRM.Views.Home;
 
 namespace MatriksCRM.Controllers
 {
@@ -73,6 +74,37 @@ namespace MatriksCRM.Controllers
                 connection.Close();
                 return View();
             }
+        }
+        /// <summary>
+        /// Sürükle bırak işlemiyle tarih bilgilerini güncelleme
+        /// </summary>
+        /// <param name="id">ilgili kaydın id değeri</param>
+        /// <param name="start">başlangıç tarihi değeri</param>
+        /// <param name="end">bitiş tarihi değeri</param>
+        /// <returns></returns>
+        public JsonResult UpdateItemDate(int id, string start, string end)
+        {
+            DBConnection connect = new DBConnection();
+            try
+            {
+                connect.OpenConnection();
+                List<SqlParameter> param = new List<SqlParameter>();
+
+                param.Add(new SqlParameter("@IDCalendar", id));
+                param.Add(new SqlParameter("@StartDate", start));
+                param.Add(new SqlParameter("@EndDate", end));
+
+                string sql = "Update tCalendar Set StartDate=@StartDate, EndDate=@EndDate Where IDCalendar=@IDCalendar";
+
+                connect.RunSqlCommand(sql, param);
+
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                connect.CloseConnection();
+            }
+
         }
     }
 }
