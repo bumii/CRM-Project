@@ -367,5 +367,9 @@ namespace MatriksCRM.Controllers
             return Json(returnValue);
 
         }
+        public ActionResult Ajanda()
+        {
+            return View();
+        }
     }
 }
