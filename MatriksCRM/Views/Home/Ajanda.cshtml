@@ -213,6 +213,9 @@
             });
         }
         $('#calendar').fullCalendar({
+            height: 650,
+            
+            //aspectRatio: 3,
             lang: 'tr',
             header: {
                 left: 'prev,next today',
@@ -233,7 +236,9 @@
             eventResize: function (event, delta, revertFunc) {
                 UpdateItemDate(event);
             }
+           
         });
+        
     </script>
 
 </body>
