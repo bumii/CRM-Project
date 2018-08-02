@@ -24,7 +24,6 @@ namespace MatriksCRM.Controllers
                 return View();
             }
         }
-
         public ActionResult Proje(string bolum)
         {
             List<Proje> ProjeListesi = new List<Proje>();
@@ -38,7 +37,6 @@ namespace MatriksCRM.Controllers
                 CommandType = System.Data.CommandType.StoredProcedure,
                 CommandText = "ProjeCek"
             };
-
             command.Parameters.Add(new SqlParameter("@KullaniciID", Session["ID"]));
             command.Parameters.Add(new SqlParameter("@Bolum", bolum));
 
@@ -149,13 +147,10 @@ namespace MatriksCRM.Controllers
             command.Parameters.Add(new SqlParameter("@FirmaAdi", proje.FirmaAdi));
             command.Parameters.Add(new SqlParameter("@ProjeAdi", proje.ProjeAdi));
             command.Parameters.Add(new SqlParameter("@ProjeYeri", proje.ProjeYeri));
-
             DateTime TeklifTarihi = DateTime.Parse(proje.TeklifTarihi);
             command.Parameters.Add(new SqlParameter("@TeklifTarihi", TeklifTarihi));
             command.Parameters.Add(new SqlParameter("@IcerikAdi", fileName));
-
             command.Parameters.Add(new SqlParameter("@TeklifIcerigi", teklifIcerigi));
-
             command.Parameters.Add(new SqlParameter("@ProjeDurum", proje.ProjeDurum));
             command.Parameters.Add(new SqlParameter("@Bolum", proje.Bolum));
 
@@ -246,11 +241,131 @@ namespace MatriksCRM.Controllers
 
             return RedirectToAction("Login", "Login");
         }
-        public ActionResult Ajanda()
+        public ActionResult IsTakip()
         {
+            List<IsTakip> IsListesi = new List<IsTakip>();
 
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            SqlConnection connection = new SqlConnection(connString);
+            SqlCommand command = new SqlCommand
+            {
+                Connection = connection,
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandText = "IsListele"
+            };
+            command.Parameters.Add(new SqlParameter("@KullaniciID", Session["ID"]));
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    try
+                    {
+                        IsTakip YeniProje = new IsTakip();
+                        YeniProje.IsID = reader.GetInt32(0);
+                        YeniProje.FirmaAdi = reader.GetString(1);
+                        YeniProje.ProjeAd = reader.GetString(2);
+                        YeniProje.ProjeYeri = reader.GetString(3);
+                        YeniProje.TeklifTarihi = reader.GetDateTime(4).ToShortDateString();
+                        YeniProje.SonGorusmeTarihi = reader.GetDateTime(5).ToShortDateString();
+                        YeniProje.ProjeVadesi = reader.GetString(6);
+                        IsListesi.Add(YeniProje);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("A null value has reached");
+                    }
 
-            return View();
+                }
+            }
+            return View(IsListesi);
+        }
+
+        public int Modify(IsTakip isTakip, string procedureName)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            SqlConnection connection = new SqlConnection(connString);
+
+            SqlCommand command = new SqlCommand
+            {
+                Connection = connection,
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandText = procedureName
+            };
+
+            if (procedureName == "IsDegistir")
+            {
+                command.Parameters.Add(new SqlParameter("@IsID", isTakip.IsID));
+            }
+            command.Parameters.Add(new SqlParameter("@KullaniciID", Session["ID"]));
+            command.Parameters.Add(new SqlParameter("@FirmaAdi", isTakip.FirmaAdi));
+            command.Parameters.Add(new SqlParameter("@ProjeAd", isTakip.ProjeAd));
+            command.Parameters.Add(new SqlParameter("@ProjeYeri", isTakip.ProjeYeri));
+            DateTime TeklifTarihi = DateTime.Parse(isTakip.TeklifTarihi);
+            command.Parameters.Add(new SqlParameter("@TeklifTarihi", TeklifTarihi));
+            DateTime SonGorusmeTarihi = DateTime.Parse(isTakip.TeklifTarihi);
+            command.Parameters.Add(new SqlParameter("@SonGorusmeTarihi", isTakip.SonGorusmeTarihi));
+            command.Parameters.Add(new SqlParameter("@ProjeVadesi", isTakip.ProjeVadesi));
+
+            if (procedureName == "IsDegistir")
+            {
+                connection.Open();
+                int effectedRows = command.ExecuteNonQuery();
+                if (effectedRows != 0)
+                {
+                    return effectedRows;
+                }
+            }
+            if (procedureName == "TakipIs")
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    int IsId = reader.GetInt32(0);
+                    connection.Close();
+                    return IsId;
+                }
+            }
+
+            return 0;
+        }
+        [HttpPost]
+        public JsonResult CreateIs(IsTakip isTakip)
+        {
+            return Json(Modify(isTakip, "TakipIs"));
+        }
+        [HttpPost]
+        public JsonResult ModifyIs(IsTakip isTakip)
+        {
+            return Json(Modify(isTakip, "IsDegistir"));
+        }
+        [HttpPost]
+        public JsonResult IsSil(int id)
+        {
+            int retval;
+            bool returnValue = false;
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                SqlCommand command = new SqlCommand("isSil", connection)
+                {
+                    CommandType = System.Data.CommandType.StoredProcedure
+                };
+                command.Parameters.AddWithValue("IsID", id);
+                connection.Open();
+                retval = command.ExecuteNonQuery();
+                connection.Close();
+            }
+            if (retval >= 1)
+            {
+                returnValue = true;
+
+            }
+            return Json(returnValue);
+
         }
     }
 }
