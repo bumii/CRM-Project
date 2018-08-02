@@ -1,0 +1,318 @@
+﻿
+@{
+    ViewBag.Title = "IsTakip";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="container" style="padding: 50px">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button id="createIs" type="button" data-toggle="modal" data-target="#createModal" class="btn btn-dark" style="border-radius: 0">İş Ekle</button>
+    </div>
+    <table class="table table-sm table-dark table-striped table-hover table-bordered text-center">
+        <thead>
+            <tr>
+                <th class="col-auto">#</th>
+                <th class="col-auto">Firma Adı</th>
+                <th class="col-auto">Proje Adı</th>
+                <th class="col-auto">Proje Yeri</th>
+                <th class="col-auto">Teklif Tarihi</th>
+                <th class="col-auto">Son Görüşme Tarihi</th>
+                <th class="col-auto">Proje Vadesi</th>
+                <th class="col-auto"></th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr id="isTakip-@Model[i].IsID">
+                    <th class="rowNumber">@(i + 1)</th>
+                    <td id="firmaAdi-@i">@Model[i].FirmaAdi</td>
+                    <td id="projeAd-@i">@Model[i].ProjeAd</td>
+                    <td id="projeYeri-@i">@Model[i].ProjeYeri</td>
+                    <td id="teklifTarihi-@i">@Model[i].TeklifTarihi</td>
+                    <td id="songorusmetarihi-@i">@Model[i].SonGorusmeTarihi</td>
+                    <td id="projeVadesi-@i">@Model[i].ProjeVadesi</td>
+                    <td>
+                        <div>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectInfo(@Model[i].IsID)" data-target="#modifyModal" style="margin-right: 10px;"><i class="fas fa-cogs text-warning"></i></a>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectId(@Model[i].IsID)" data-target="#deleteModal"><i class="fas fa-trash-alt text-danger"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Proje Bilgilerini Değiştir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="modifyForm" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modal-firmaAdi">Firma Adı:</label>
+                        <input id="modal-firmaAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeAd">Proje Adı:</label>
+                        <input id="modal-projeAd" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeYeri">Proje Yeri:</label>
+                        <input id="modal-projeYeri" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teklifTarihi">Teklif Tarihi:</label>
+                        <input id="modal-teklifTarihi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sonGorusmeTarihi">Son Görüşme Tarihi:</label>
+                        <input id="modal-sonGorusmeTarihi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Proje Vadesi:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Proje Durumu<span class="caret"></span>
+                            </button>
+                            <div id="dropdownDurum-menu" class="dropdown-menu" aria-labelledby="dropdownDurum">
+                                <a class="dropdown-item" href="#">Kisa</a>
+                                <a class="dropdown-item" href="#">Orta</a>
+                                <a class="dropdown-item" href="#">Uzun</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modifyIs" type="button" class="btn btn-primary">Kaydet</button>
+                </div>
+                <div id="projeDegistirildi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Yeni Proje Oluştur</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="createForm" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modal-firmaAdi">Firma Adı:</label>
+                        <input id="create-firmaAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeAd">Proje Adı:</label>
+                        <input id="create-projeAd" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projeYeri">Proje Yeri:</label>
+                        <input id="create-projeYeri" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teklifTarihi">Teklif Tarihi:</label>
+                        <input id="create-teklifTarihi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sonGorusmeTarihi">Son Görüşme Tarihi:</label>
+                        <input id="create-sonGorusmeTarihi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Proje Vadesi:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="createDropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Proje Vadesi<span class="caret"></span>
+                            </button>
+                            <div id="dropdownDurum-create" class="dropdown-menu" aria-labelledby="createDropdownDurum">
+                                <a class="dropdown-item" href="#">Kisa</a>
+                                <a class="dropdown-item" href="#">Orta</a>
+                                <a class="dropdown-item" href="#">Uzun</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-createIs" type="button" class="btn btn-primary">Oluştur</button>
+                </div>
+            </form>
+            <div id="projeEklendi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu projeyi silmek istediğinizden emin misiniz ?
+            </div>
+            <div class="modal-footer">
+                <button id="IsSil" type="button" class="btn btn-danger">Sil</button>
+            </div>
+            <div id="isSilindi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
+        </div>
+    </div>
+</div>
+<script>
+    modifyIsId = 0
+    IsSilId = 0;
+    count = @Model.Count;
+
+    function sendProjectInfo(id) {
+
+      modifyIsId = id;
+
+        document.getElementById("modal-firmaAdi").value = document.getElementById('isTakip-' + id).getElementsByTagName('td')[0].innerHTML;
+        document.getElementById("modal-projeAd").value = document.getElementById('isTakip-' + id).getElementsByTagName('td')[1].innerHTML;
+        document.getElementById("modal-projeYeri").value = document.getElementById('isTakip-' + id).getElementsByTagName('td')[2].innerHTML;
+        document.getElementById("modal-teklifTarihi").value = document.getElementById('isTakip-' + id).getElementsByTagName('td')[3].innerHTML;
+        document.getElementById("modal-sonGorusmeTarihi").value = document.getElementById('isTakip-' + id).getElementsByTagName('td')[4].innerHTML;
+
+        $("#dropdownDurum").html(document.getElementById('isTakip-' + id).getElementsByTagName('td')[5].innerHTML);
+    };
+
+    $('#modal-createIs').click(function () {
+        var formData = new FormData();
+        formData.append("FirmaAdi", $("#create-firmaAdi").val());
+        formData.append("ProjeAd", $("#create-projeAd").val());
+        formData.append("ProjeYeri", $("#create-projeYeri").val());
+        formData.append("TeklifTarihi", $("#create-teklifTarihi").val());
+        formData.append("SonGorusmeTarihi", $("#create-sonGorusmeTarihi").val());
+        formData.append("ProjeVadesi", document.getElementById('createDropdownDurum').innerHTML);
+        $.ajax({
+            url: '/Home/CreateIs',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (id) {
+                var newProject = "<tr id=isTakip-" + id + " style='display: none'>" +
+                    "<th class=rowNumber>" + (count + 1) + "</th>" +
+                    "<td id=firmaAdi-" + count + ">" + formData.get("FirmaAdi") + "</td>" +
+                    "<td id=projeAd-" + count + ">" + formData.get("ProjeAd") + "</td>" +
+                    "<td id=projeYeri-" + count + ">" + formData.get("ProjeYeri") + "</td>" +
+                    "<td id=teklifTarihi-" + count + ">" + formData.get("TeklifTarihi") + "</td>" +
+                    "<td id=sonGorusmeTarihi-" + count + ">" + formData.get("SonGorusmeTarihi") + "</td>" +
+                    "<td id=projeVadesi-" + count + ">" + formData.get("ProjeVadesi") + "</td>" +
+                    "<td>" +
+                    "<div>" +
+                    "<a id='" + count + "'href= '' data-toggle='modal' onclick=sendProjectInfo(" + id + ") data-target='#modifyModal' style='margin-right: 10px;'><i class='fas fa-cogs text-warning'></i ></a>" +
+                    "<a id='" + count + "' href='' data-toggle='modal' onclick='sendProjectId(" + id + ")' data-target='#deleteModal'><i class='fas fa-trash-alt text-danger'></i></a>" +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>";
+                $("#tableBody").append(newProject);
+
+                IsId = "#isTakip-" + id;
+
+                $('#projeEklendi').show(500, function () {
+                    $('#createModal').modal('toggle');
+                    $(this).hide();
+                    $('#createModal').on('hidden.bs.modal', function () {
+                        $(IsId).show(300);
+                    });
+                });
+
+                count = count + 1;
+            },
+        });
+    });
+    $("#modifyIs").click(function () {
+
+        var formData = new FormData();
+
+
+        formData.append("IsID", modifyIsId);
+        formData.append("FirmaAdi", $("#modal-firmaAdi").val());
+        formData.append("ProjeAd", $("#modal-projeAd").val());
+        formData.append("ProjeYeri", $("#modal-projeYeri").val());
+        formData.append("TeklifTarihi", $("#modal-teklifTarihi").val());
+        formData.append("SonGorusmeTarihi", $("#modal-sonGorusmeTarihi").val());
+        formData.append("ProjeVadesi", document.getElementById('dropdownDurum').innerHTML);
+
+        $.ajax({
+            url: '/Home/ModifyIs',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $('#projeDegistirildi').show(500, function () {
+                    $('#modifyModal').modal('toggle');
+                    $(this).hide();
+                    $('#modifyModal').on('hidden.bs.modal', function () {
+                        $("#isTakip-" + modifyIsId).fadeOut(300, function () {
+                            modifiedProject = document.getElementById('isTakip-' + modifyIsId);
+
+                            modifiedProject.getElementsByTagName('td')[0].innerHTML = formData.get("FirmaAdi");
+                            modifiedProject.getElementsByTagName('td')[1].innerHTML = formData.get("ProjeAd");
+                            modifiedProject.getElementsByTagName('td')[2].innerHTML = formData.get("ProjeYeri");
+                            modifiedProject.getElementsByTagName('td')[3].innerHTML = formData.get("TeklifTarihi");
+                            modifiedProject.getElementsByTagName('td')[4].innerHTML = formData.get("SonGorusmeTarihi");
+                            modifiedProject.getElementsByTagName('td')[5].innerHTML = formData.get("ProjeVadesi");
+                            $("#isTakip-" + modifyIsId).fadeIn(300);
+
+                        });
+                    });
+                });
+            },
+        });
+    });
+
+
+
+
+    $("#IsSil").click(function () {
+        isDeleted = JSON.stringify({ 'id': IsSilId });
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '/Home/IsSil',
+            data: isDeleted
+        }).done(function (obj) {
+            var i = 0;
+            var IsId = "isTakip-" + IsSilId;
+
+            $('#isSilindi').show(500, function () {
+                $('#deleteModal').modal('toggle');
+                $(this).hide();
+                $('#deleteModal').on('hidden.bs.modal', function () {
+                    $("#" + IsId).hide(300, function () {
+                        document.getElementById(IsId).outerHTML = "";
+                    });
+                });
+            });
+            count = count - 1;
+        });
+    });
+
+    function sendProjectId(id) {
+        IsSilId = id;
+    }
+
+    $("#dropdownDurum-menu a").click(function () {
+        $('#dropdownDurum').html($(this).text());
+    });
+
+    $("#dropdownDurum-create a").click(function () {
+        $('#createDropdownDurum').html($(this).text());
+    });
+</script>
