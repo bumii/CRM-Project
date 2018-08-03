@@ -362,10 +362,129 @@ namespace MatriksCRM.Controllers
             if (retval >= 1)
             {
                 returnValue = true;
-
             }
             return Json(returnValue);
+        }
+        public ActionResult Musteri()
+        {
+            List<Musteri> MusteriListesi = new List<Musteri>();
 
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            SqlConnection connection = new SqlConnection(connString);
+            SqlCommand command = new SqlCommand
+            {
+                Connection = connection,
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandText = "MusteriListele"
+            };
+            command.Parameters.Add(new SqlParameter("@KullaniciID", Session["ID"]));
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    try
+                    {
+
+                        Musteri YeniMusteri = new Musteri();
+                        YeniMusteri.MusteriID = reader.GetInt32(0);
+                        YeniMusteri.FirmaAdi = reader.GetString(1);
+                        YeniMusteri.YetkiliAd = reader.GetString(2);
+                        YeniMusteri.YetkiliPoz = reader.GetString(3);
+                        YeniMusteri.MusteriTel = reader.GetString(4);
+                        YeniMusteri.MusteriMail = reader.GetString(5);
+                        YeniMusteri.MusteriDurum = reader.GetString(6);
+                        MusteriListesi.Add(YeniMusteri);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("A null value has reached");
+                    }
+
+                }
+            }
+            return View(MusteriListesi);
+        }
+        public int ModifyCustomer(Musteri musteri, string procedureName)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            SqlConnection connection = new SqlConnection(connString);
+
+            SqlCommand command = new SqlCommand
+            {
+                Connection = connection,
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandText = procedureName
+            };
+
+            if (procedureName == "MusteriGuncelle")
+            {
+                command.Parameters.Add(new SqlParameter("@MusteriID", musteri.MusteriID));
+            }
+            command.Parameters.Add(new SqlParameter("@KullaniciID", Session["ID"]));
+            command.Parameters.Add(new SqlParameter("@FirmaAdi", musteri.FirmaAdi));
+            command.Parameters.Add(new SqlParameter("@YetkiliAd", musteri.YetkiliAd));
+            command.Parameters.Add(new SqlParameter("@YetkiliPoz", musteri.YetkiliPoz));
+            command.Parameters.Add(new SqlParameter("@MusteriTel", musteri.MusteriTel));
+            command.Parameters.Add(new SqlParameter("@MusteriMail", musteri.MusteriMail));
+            command.Parameters.Add(new SqlParameter("@MusteriDurum", musteri.MusteriDurum));
+
+            if (procedureName == "MusteriGuncelle")
+            {
+                connection.Open();
+                int effectedRows = command.ExecuteNonQuery();
+                if (effectedRows != 0)
+                {
+                    return effectedRows;
+                }
+            }
+            if (procedureName == "MusteriEkle")
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    int MusteriId = reader.GetInt32(0);
+                    connection.Close();
+                    return MusteriId;
+                }
+            }
+
+            return 0;
+        }
+        [HttpPost]
+        public JsonResult CreateCustomer(Musteri musteri)
+        {
+            return Json(ModifyCustomer(musteri, "MusteriEkle"));
+        }
+        [HttpPost]
+        public JsonResult ModifyCustomer(Musteri musteri)
+        {
+            return Json(ModifyCustomer(musteri, "MusteriGuncelle"));
+        }
+        public JsonResult DeleteCustomer(int id)
+        {
+            int retval;
+            bool returnValue = false;
+            string connString = ConfigurationManager.ConnectionStrings["MatriksStajCRM"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                SqlCommand command = new SqlCommand("musteriSil", connection)
+                {
+                    CommandType = System.Data.CommandType.StoredProcedure
+                };
+                command.Parameters.AddWithValue("MusteriID", id);
+                connection.Open();
+                retval = command.ExecuteNonQuery();
+                connection.Close();
+            }
+            if (retval >= 1)
+            {
+                returnValue = true;
+            }
+            return Json(returnValue);
         }
         public ActionResult Ajanda()
         {

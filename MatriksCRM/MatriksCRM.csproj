@@ -253,6 +253,7 @@
     </Compile>
     <Compile Include="Models\IsTakip.cs" />
     <Compile Include="Models\Kullanici.cs" />
+    <Compile Include="Models\Musteri.cs" />
     <Compile Include="Models\Proje.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Home\CalendarEvent.cs" />
@@ -270,6 +271,7 @@
     <Content Include="Views\Home\Proje.cshtml" />
     <Content Include="Views\Home\Ajanda.cshtml" />
     <Content Include="Views\Home\IsTakip.cshtml" />
+    <Content Include="Views\Home\Musteri.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

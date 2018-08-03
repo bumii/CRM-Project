@@ -1,0 +1,312 @@
+﻿
+@{
+    ViewBag.Title = "Musteri";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="container" style="padding: 50px">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button id="createCustomer" type="button" data-toggle="modal" data-target="#createModal" class="btn btn-dark" style="border-radius: 0">Müşteri Ekle</button>
+    </div>
+    <table class="table table-sm table-dark table-striped table-hover table-bordered text-center">
+        <thead>
+            <tr>
+                <th class="col-auto">#</th>
+                <th class="col-auto">Firma Adı</th>
+                <th class="col-auto">Yetkili Adı</th>
+                <th class="col-auto">Yetkili Pozisyonu</th>
+                <th class="col-auto">Telefon Numarası</th>
+                <th class="col-auto">Mail Adresi</th>
+                <th class="col-auto">Müşteri Durumu</th>
+                <th class="col-auto"></th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr id="Musteri-@Model[i].MusteriID">
+                    <th class="rowNumber">@(i + 1)</th>
+                    <td id="firmaAdi-@i">@Model[i].FirmaAdi</td>
+                    <td id="yetkiliAd-@i">@Model[i].YetkiliAd</td>
+                    <td id="yetkiliPoz-@i">@Model[i].YetkiliPoz</td>
+                    <td id="musteriTel-@i">@Model[i].MusteriTel</td>
+                    <td id="musteriMail-@i">@Model[i].MusteriMail</td>
+                    <td id="musteriDurum-@i">@Model[i].MusteriDurum</td>
+                    <td>
+                        <div>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectInfo(@Model[i].MusteriID)" data-target="#modifyModal" style="margin-right: 10px;"><i class="fas fa-cogs text-warning"></i></a>
+                            <a id="@i" href="" data-toggle="modal" onclick="sendProjectId(@Model[i].MusteriID)" data-target="#deleteModal"><i class="fas fa-trash-alt text-danger"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Müşteri Bilgilerini Değiştir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="modifyForm" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modal-firmaAdi">Firma Adı:</label>
+                        <input id="modal-firmaAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yetkiliAd">Yetkili Adı:</label>
+                        <input id="modal-yetkiliAd" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yetkiliPoz">Yetkili Pozisyonu:</label>
+                        <input id="modal-yetkiliPoz" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="musteriTel">Telefon Numarası:</label>
+                        <input id="modal-musteriTel" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="musteriMail">Mail Adresi:</label>
+                        <input id="modal-musteriMail" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Müşteri Durumu:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Müşteri Durumu<span class="caret"></span>
+                            </button>
+                            <div id="dropdownDurum-menu" class="dropdown-menu" aria-labelledby="dropdownDurum">
+                                <a class="dropdown-item" href="#">Sık Gorusulen</a>
+                                <a class="dropdown-item" href="#">Gorusulmesi Gereken</a>
+                                <a class="dropdown-item" href="#">Potansiyel Musteri</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modifyMusteri" type="button" class="btn btn-primary">Kaydet</button>
+                </div>
+                <div id="projeDegistirildi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Yeni Proje Oluştur</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="createForm" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modal-firmaAdi">Firma Adı:</label>
+                        <input id="create-firmaAdi" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yetkiliAd">Yetkili Adı:</label>
+                        <input id="create-yetkiliAd" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yetkiliPoz">Yetkili Pozisyonu:</label>
+                        <input id="create-yetkiliPoz" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="musteriTel">Telefon Numarası:</label>
+                        <input id="create-musteriTel" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="musteriMail">Mail Adresi:</label>
+                        <input id="create-musteriMail" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Müşteri Durumu:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="createDropdownDurum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Müşteri Durumu<span class="caret"></span>
+                            </button>
+                            <div id="dropdownDurum-create" class="dropdown-menu" aria-labelledby="createDropdownDurum">
+                                <a class="dropdown-item" href="#">Sık Gorusulen</a>
+                                <a class="dropdown-item" href="#">Gorusulmesi Gereken</a>
+                                <a class="dropdown-item" href="#">Potansiyel Musteri</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-createCustomer" type="button" class="btn btn-primary">Oluştur</button>
+                </div>
+            </form>
+            <div id="projeEklendi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu müşteriyi silmek istediğinizden emin misiniz ?
+            </div>
+            <div class="modal-footer">
+                <button id="MusteriSil" type="button" class="btn btn-danger">Sil</button>
+            </div>
+            <div id="MusteriSilindi" class="alert alert-success" style="display:none;">İşleminiz başarıyla gerçekleştirilmiştir.</div>
+        </div>
+    </div>
+</div>
+<script>
+
+    modifyProjectId = 0
+    deleteProjectId = 0;
+    count = @Model.Count;
+
+    function sendProjectInfo(id) {
+
+        modifyProjectId = id;
+
+        document.getElementById("modal-firmaAdi").value = document.getElementById('Musteri-' + id).getElementsByTagName('td')[0].innerHTML;
+        document.getElementById("modal-yetkiliAd").value = document.getElementById('Musteri-' + id).getElementsByTagName('td')[1].innerHTML;
+        document.getElementById("modal-yetkiliPoz").value = document.getElementById('Musteri-' + id).getElementsByTagName('td')[2].innerHTML;
+        document.getElementById("modal-musteriTel").value = document.getElementById('Musteri-' + id).getElementsByTagName('td')[3].innerHTML;
+        document.getElementById("modal-musteriMail").value = document.getElementById('Musteri-' + id).getElementsByTagName('td')[4].innerHTML;
+        $("#dropdownDurum").html(document.getElementById('Musteri-' + id).getElementsByTagName('td')[5].innerHTML);
+    };
+    $('#modal-createCustomer').click(function () {
+        var formData = new FormData();
+        formData.append("FirmaAdi", $("#create-firmaAdi").val());
+        formData.append("YetkiliAd", $("#create-yetkiliAd").val());
+        formData.append("YetkiliPoz", $("#create-yetkiliPoz").val());
+        formData.append("MusteriTel", $("#create-musteriTel").val());
+        formData.append("MusteriMail", $("#create-musteriMail").val());
+        formData.append("MusteriDurum", document.getElementById('createDropdownDurum').innerHTML);
+        $.ajax({
+            url: '/Home/CreateCustomer',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (id) {
+                var newProject = "<tr id=Musteri-" + id + " style='display: none'>" +
+                    "<th class=rowNumber>" + (count + 1) + "</th>" +
+                    "<td id=firmaAdi-" + count + ">" + formData.get("FirmaAdi") + "</td>" +
+                    "<td id=yetkiliAd-" + count + ">" + formData.get("YetkiliAd") + "</td>" +
+                    "<td id=yetkiliPoz-" + count + ">" + formData.get("YetkiliPoz") + "</td>" +
+                    "<td id=musteriTel-" + count + ">" + formData.get("MusteriTel") + "</td>" +
+                    "<td id=musteriMail-" + count + ">" + formData.get("MusteriMail") + "</td>" +
+                    "<td id=musteriDurum-" + count + ">" + formData.get("MusteriDurum") + "</td>" +
+                    "<td>" +
+                    "<div>" +
+                    "<a id='" + count + "'href= '' data-toggle='modal' onclick=sendProjectInfo(" + id + ") data-target='#modifyModal' style='margin-right: 10px;'><i class='fas fa-cogs text-warning'></i ></a>" +
+                    "<a id='" + count + "' href='' data-toggle='modal' onclick='sendProjectId(" + id + ")' data-target='#deleteModal'><i class='fas fa-trash-alt text-danger'></i></a>" +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>";
+                $("#tableBody").append(newProject);
+
+                MusteriID = "#Musteri-" + id;
+
+                $('#projeEklendi').show(500, function () {
+                    $('#createModal').modal('toggle');
+                    $(this).hide();
+                    $('#createModal').on('hidden.bs.modal', function () {
+                        $(MusteriID).show(300);
+                    });
+                });
+
+                count = count + 1;
+            },
+        });
+    });
+    $("#modifyMusteri").click(function () {
+
+        var formData = new FormData();
+
+
+        formData.append("MusteriID", modifyProjectId);
+        formData.append("FirmaAdi", $("#modal-firmaAdi").val());
+        formData.append("YetkiliAd", $("#modal-yetkiliAd").val());
+        formData.append("YetkiliPoz", $("#modal-yetkiliPoz").val());
+        formData.append("MusteriTel", $("#modal-musteriTel").val());
+        formData.append("MusteriMail", $("#modal-musteriMail").val());
+        formData.append("MusteriDurum", document.getElementById('dropdownDurum').innerHTML);
+
+        $.ajax({
+            url: '/Home/ModifyCustomer',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $('#projeDegistirildi').show(500, function () {
+                    $('#modifyModal').modal('toggle');
+                    $(this).hide();
+                    $('#modifyModal').on('hidden.bs.modal', function () {
+                        $("#Musteri-" + modifyProjectId).fadeOut(300, function () {
+                            modifiedProject = document.getElementById('Musteri-' + modifyProjectId);
+
+                            modifiedProject.getElementsByTagName('td')[0].innerHTML = formData.get("FirmaAdi");
+                            modifiedProject.getElementsByTagName('td')[1].innerHTML = formData.get("YetkiliAd");
+                            modifiedProject.getElementsByTagName('td')[2].innerHTML = formData.get("YetkiliPoz");
+                            modifiedProject.getElementsByTagName('td')[3].innerHTML = formData.get("MusteriTel");
+                            modifiedProject.getElementsByTagName('td')[4].innerHTML = formData.get("MusteriMail");
+                            modifiedProject.getElementsByTagName('td')[5].innerHTML = formData.get("MusteriDurum");
+                            $("#Musteri-" + modifyProjectId).fadeIn(300);
+
+                        });
+                    });
+                });
+            },
+        });
+    });
+    $("#MusteriSil").click(function () {
+        isDeleted = JSON.stringify({ 'id': deleteProjectId });
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '/Home/DeleteCustomer',
+            data: isDeleted
+        }).done(function (obj) {
+            var i = 0;
+            var MusteriID = "Musteri-" + deleteProjectId;
+
+            $('#MusteriSilindi').show(500, function () {
+                $('#deleteModal').modal('toggle');
+                $(this).hide();
+                $('#deleteModal').on('hidden.bs.modal', function () {
+                    $("#" + MusteriID).hide(300, function () {
+                        document.getElementById(MusteriID).outerHTML = "";
+                    });
+                });
+            });
+            count = count - 1;
+        });
+    });
+
+    function sendProjectId(id) {
+        deleteProjectId = id;
+    }
+    $("#dropdownDurum-menu a").click(function () {
+        $('#dropdownDurum').html($(this).text());
+    });
+
+    $("#dropdownDurum-create a").click(function () {
+        $('#createDropdownDurum').html($(this).text());
+    });
+
+</script>
