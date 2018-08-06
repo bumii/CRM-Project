@@ -10,13 +10,12 @@
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Main.css" rel="stylesheet" />
     <link href="~/Content/fullcalendar.min.css" rel="stylesheet" />
 </head>
 <body>
     <div id="calendar">
-
     </div>
-
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery-2.0.0.min.js"></script>
     <script src="~/Scripts/moment.min.js"></script>
@@ -25,14 +24,12 @@
     <script src="~/Scripts/fullcalendar/locale/tr.js"></script>
     <script src="~/Scripts/fullcalendar/locale-all.js"></script>
     <script src="~/Scripts/bootbox.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
+    <script>$(document).ready(function() {
             GetCalendarEvents();
-        });
+});
 
-        function GetCalendarEvents() {
-          
+function GetCalendarEvents() {
+
             $('#calendar').fullCalendar({
                 lang: 'tr',
                 header: {
@@ -42,13 +39,13 @@
                 },
                 editable: true,
                 events: '/Calendar/GetCalendarEvents/',
-                eventClick: function (event) {
+                eventClick: function(event) {
                     alert('Item ID: ' + event.id + "\nItem Title: " + event.title);
                 }
             });
-        }
-        // Seçilen tarih için yeni event oluşturma, modal açar
-        function NewItem(selectedDate) {
+}
+// Seçilen tarih için yeni event oluşturma, modal açar
+function NewItem(selectedDate) {
             var html = '';
 
             html += '<div class="row form-horizontal">';
@@ -106,7 +103,7 @@
                 buttons: {
                     success: {
                         label: "Kaydet", className: "btn-success",
-                        callback: function () {
+                        callback: function() {
                             var item = {
                                 id: 0,
                                 title: $('#txtTitle').val(),
@@ -125,9 +122,9 @@
                     }
                 }
             });
-        }
-        // modal'da girilen verileri kaydeder
-        function SaveItem(item) {
+}
+// modal'da girilen verileri kaydeder
+function SaveItem(item) {
             $.ajax({
                 type: "POST",
                 url: "/Calendar/AddOrEditItem/",
@@ -135,18 +132,18 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 async: true,
-                error: function (request, status, error) {
+                error: function(request, status, error) {
                     var obj = jQuery.parseJSON(request.responseText);
                     bootbox.alert(obj.Message);
                 },
-                success: function (msg) {
+                success: function(msg) {
                     $('#calendar').fullCalendar('refetchEvents');
                     $('#calendar').fullCalendar('unselect');
                 }
             });
-        }
-        // sürükle bırak veya resize ile tarih bilgilerini güncelleme
-        function UpdateItemDate(selectedItem) {
+}
+// sürükle bırak veya resize ile tarih bilgilerini güncelleme
+function UpdateItemDate(selectedItem) {
             debugger;
 
             var StartDate = selectedItem.start.format();
@@ -159,24 +156,24 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 async: true,
-                error: function (request, status, error) {
+                error: function(request, status, error) {
                     debugger;
                     var obj = jQuery.parseJSON(request.responseText);
                     bootbox.alert(obj.Message);
                 },
-                success: function (msg) {
+                success: function(msg) {
 
                 }
             });
-        }
-        // tıklanan event için silme onayı
-        function DeleteItem(id) {
+}
+// tıklanan event için silme onayı
+function DeleteItem(id) {
             bootbox.dialog({
                 message: "Silmek istediğinize emin misiniz?",
                 title: "Dikkat",
                 buttons: {
                     success: {
-                        label: "Evet", className: "btn-danger", callback: function () {
+                        label: "Evet", className: "btn-danger", callback: function() {
                             FnDelete(id);
                         }
                     },
@@ -186,10 +183,10 @@
                     }
                 }
             });
-        }
+}
 
-        // tıklanan event'i siler
-        function FnDelete(id) {
+// tıklanan event'i siler
+function FnDelete(id) {
             jQuery.ajax({
                 type: "POST",
                 url: "/Calendar/DeleteItem/",
@@ -197,11 +194,11 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 async: true,
-                error: function (request, status, error) {
+                error: function(request, status, error) {
                     var obj = jQuery.parseJSON(request.responseText);
                     bootbox.alert(obj.Message);
                 },
-                success: function (msg) {
+                success: function(msg) {
                     if (msg) {
 
                         $('#calendar').fullCalendar('refetchEvents');
@@ -211,10 +208,10 @@
                     }
                 }
             });
-        }
-        $('#calendar').fullCalendar({
+}
+$('#calendar').fullCalendar({
             height: 650,
-            
+
             //aspectRatio: 3,
             lang: 'tr',
             header: {
@@ -224,22 +221,22 @@
             },
             editable: true,
             events: '/Calendar/GetCalendarEvents/',
-            dayClick: function (date, jsEvent, view) {
+            dayClick: function(date, jsEvent, view) {
                 NewItem(date.format());
             },
-            eventClick: function (event) {
+            eventClick: function(event) {
                 DeleteItem(event.id);
             },
-            eventDrop: function (event, delta, revertFunc) {
+            eventDrop: function(event, delta, revertFunc) {
                 UpdateItemDate(event);
             },
-            eventResize: function (event, delta, revertFunc) {
+            eventResize: function(event, delta, revertFunc) {
                 UpdateItemDate(event);
             }
-           
-        });
-        
-    </script>
 
+});</script>
+    <style>
+
+    </style>
 </body>
 </html>
