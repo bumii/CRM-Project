@@ -200,6 +200,7 @@ hr.fc-divider {
     padding: 0;
     vertical-align: top;
     background-color: #007bff1f;
+    color: white;
 }
 
     .fc td.fc-today {
@@ -646,7 +647,8 @@ a.fc-more {
 }
 
 .fc-toolbar.fc-header-toolbar {
-    margin-bottom: 1em
+    margin-bottom: 1em;
+    color: #ffffff;
 }
 
 .fc-toolbar.fc-footer-toolbar {
