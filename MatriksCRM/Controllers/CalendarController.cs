@@ -26,7 +26,6 @@ namespace FullCalendar.Controllers
         /// </summary>
         /// <param name="start">Başlangıç tarihi parametresi</param>
         /// <param name="end">Bitiş tarihi parametresi</param>
-        /// <param name="kullanici"></param>
         /// <returns></returns>
         public JsonResult GetCalendarEvents(string start, string end)
         {
@@ -41,9 +40,10 @@ namespace FullCalendar.Controllers
                 List<SqlParameter> param = new List<SqlParameter>();
 
                 param.Add(new SqlParameter("@StartDate", start));
-                param.Add(new SqlParameter("@EndDate", end));
-
-                DataTable dt = connect.GetDataTable("Select * from tCalendar Where StartDate>=@StartDate and EndDate<=@EndDate", param);
+                param.Add(new SqlParameter("@EndTime", end));
+                var kullaniciid = Session["ID"].ToString();
+                param.Add(new SqlParameter("@KullaniciID", kullaniciid));
+                DataTable dt = connect.GetDataTable("Select * from tAgenda.tAgenda Where StartDate>=@StartDate and EndTime<=@EndTime and KullaniciID=@KullaniciID ", param);
 
                 int i = 0, n = dt.Rows.Count;
                 for (i = 0; i < n; i++)
@@ -54,7 +54,7 @@ namespace FullCalendar.Controllers
                     item.id = int.Parse(dr["NotID"].ToString());
                     item.title = dr["Title"].ToString();
                     item.start = string.Format("{0:s}", dr["StartDate"]);
-                    item.end = string.Format("{0:s}", dr["EndDate"]);
+                    item.end = string.Format("{0:s}", dr["EndTime"]);
                     item.color = dr["Color"].ToString();
                     item.allDay = bool.Parse(dr["AllDay"].ToString());
 
@@ -68,7 +68,6 @@ namespace FullCalendar.Controllers
                 connect.CloseConnection();
             }
         }
-
         /// <summary>
         /// Veritabanına Ekleme yapar veya varolan kayıtta güncelleme yapar
         /// </summary>
@@ -81,15 +80,15 @@ namespace FullCalendar.Controllers
             {
                 connect.OpenConnection();
                 List<SqlParameter> param = new List<SqlParameter>();
-              
                 param.Add(new SqlParameter("@Title", item.title));
                 param.Add(new SqlParameter("@StartDate", item.start));
                 param.Add(new SqlParameter("@EndTime", item.end));
                 param.Add(new SqlParameter("@Color", item.color));
                 param.Add(new SqlParameter("@AllDay", item.allDay));
-
-                string sql = "Insert into tAgenda.tAgenda(Title,StartDate,EndTime,Color,AllDay) ";
-                sql += "Values(@Title,@StartDate,@EndTime,@Color,@AllDay)";
+                var kullaniciid = Session["ID"].ToString();
+                param.Add(new SqlParameter("@KullaniciID", kullaniciid));
+                string sql = "Insert into tAgenda.tAgenda(KullaniciID,Title,StartDate,EndTime,Color,AllDay) ";
+                sql += "Values(@KullaniciID,@Title,@StartDate,@EndTime,@Color,@AllDay) ";
 
                 connect.RunSqlCommand(sql, param);
 
@@ -133,7 +132,7 @@ namespace FullCalendar.Controllers
 
                 param.Add(new SqlParameter("@NotID", id));
 
-                string sql = "Delete tAgenda.tAgenda Where NotID=@NotID";
+                string sql = "Delete dbo.tCalendar Where NotID=@NotID";
 
                 connect.RunSqlCommand(sql, param);
 
