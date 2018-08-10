@@ -26,6 +26,7 @@ namespace FullCalendar.Controllers
         /// </summary>
         /// <param name="start">Başlangıç tarihi parametresi</param>
         /// <param name="end">Bitiş tarihi parametresi</param>
+        /// <param name="kullanici"></param>
         /// <returns></returns>
         public JsonResult GetCalendarEvents(string start, string end)
         {
@@ -42,7 +43,7 @@ namespace FullCalendar.Controllers
                 param.Add(new SqlParameter("@StartDate", start));
                 param.Add(new SqlParameter("@EndDate", end));
 
-                DataTable dt = connect.GetDataTable("Select * from dbo.tCalendar Where StartDate>=@StartDate and EndDate<=@EndDate", param);
+                DataTable dt = connect.GetDataTable("Select * from tCalendar Where StartDate>=@StartDate and EndDate<=@EndDate", param);
 
                 int i = 0, n = dt.Rows.Count;
                 for (i = 0; i < n; i++)
@@ -67,6 +68,7 @@ namespace FullCalendar.Controllers
                 connect.CloseConnection();
             }
         }
+
         /// <summary>
         /// Veritabanına Ekleme yapar veya varolan kayıtta güncelleme yapar
         /// </summary>
@@ -79,15 +81,15 @@ namespace FullCalendar.Controllers
             {
                 connect.OpenConnection();
                 List<SqlParameter> param = new List<SqlParameter>();
-
+              
                 param.Add(new SqlParameter("@Title", item.title));
                 param.Add(new SqlParameter("@StartDate", item.start));
-                param.Add(new SqlParameter("@EndDate", item.end));
+                param.Add(new SqlParameter("@EndTime", item.end));
                 param.Add(new SqlParameter("@Color", item.color));
                 param.Add(new SqlParameter("@AllDay", item.allDay));
 
-                string sql = "Insert into dbo.tCalendar(Title,StartDate,EndDate,Color,AllDay) ";
-                sql += "Values(@Title,@StartDate,@EndDate,@Color,@AllDay) ";
+                string sql = "Insert into tAgenda.tAgenda(Title,StartDate,EndTime,Color,AllDay) ";
+                sql += "Values(@Title,@StartDate,@EndTime,@Color,@AllDay)";
 
                 connect.RunSqlCommand(sql, param);
 
@@ -131,7 +133,7 @@ namespace FullCalendar.Controllers
 
                 param.Add(new SqlParameter("@NotID", id));
 
-                string sql = "Delete dbo.tCalendar Where NotID=@NotID";
+                string sql = "Delete tAgenda.tAgenda Where NotID=@NotID";
 
                 connect.RunSqlCommand(sql, param);
 

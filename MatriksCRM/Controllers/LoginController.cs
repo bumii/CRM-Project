@@ -94,7 +94,7 @@ namespace MatriksCRM.Controllers
                 param.Add(new SqlParameter("@StartDate", start));
                 param.Add(new SqlParameter("@EndDate", end));
 
-                string sql = "Update tCalendar Set StartDate=@StartDate, EndDate=@EndDate Where IDCalendar=@IDCalendar";
+                string sql = "Update tAgenda Set StartDate=@StartDate, EndDate=@EndDate Where IDCalendar=@IDCalendar";
 
                 connect.RunSqlCommand(sql, param);
 
