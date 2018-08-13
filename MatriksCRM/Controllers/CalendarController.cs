@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 //using FullCalendar.Models;
 using MatriksCRM.Views.Home;
 
@@ -57,7 +58,6 @@ namespace FullCalendar.Controllers
                     item.end = string.Format("{0:s}", dr["EndTime"]);
                     item.color = dr["Color"].ToString();
                     item.allDay = bool.Parse(dr["AllDay"].ToString());
-
                     eventItems.Add(item);
                 }
 
@@ -78,17 +78,18 @@ namespace FullCalendar.Controllers
             DBConnection connect = new DBConnection();
             try
             {
+                var kullaniciid = Session["ID"].ToString();
                 connect.OpenConnection();
                 List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@KullaniciID", kullaniciid));
                 param.Add(new SqlParameter("@Title", item.title));
                 param.Add(new SqlParameter("@StartDate", item.start));
                 param.Add(new SqlParameter("@EndTime", item.end));
                 param.Add(new SqlParameter("@Color", item.color));
                 param.Add(new SqlParameter("@AllDay", item.allDay));
-                var kullaniciid = Session["ID"].ToString();
-                param.Add(new SqlParameter("@KullaniciID", kullaniciid));
-                string sql = "Insert into tAgenda.tAgenda(KullaniciID,Title,StartDate,EndTime,Color,AllDay) ";
-                sql += "Values(@KullaniciID,@Title,@StartDate,@EndTime,@Color,@AllDay) ";
+                param.Add(new SqlParameter("@NOTLAR", item.note));
+                string sql = "Insert into tAgenda.tAgenda(KullaniciID,Title,StartDate,EndTime,Color,AllDay,NOTLAR) ";
+                sql += "Values(@KullaniciID,@Title,@StartDate,@EndTime,@Color,@AllDay,@NOTLAR) ";
 
                 connect.RunSqlCommand(sql, param);
 
@@ -132,7 +133,7 @@ namespace FullCalendar.Controllers
 
                 param.Add(new SqlParameter("@NotID", id));
 
-                string sql = "Delete dbo.tCalendar Where NotID=@NotID";
+                string sql = "Delete tAgenda.tAgenda Where NotID=@NotID";
 
                 connect.RunSqlCommand(sql, param);
 
@@ -145,5 +146,40 @@ namespace FullCalendar.Controllers
 
         }
 
+        public JsonResult GetNote(string id){
+            List<CalendarEvent> eventItems = new List<CalendarEvent>();
+
+            DBConnection connect = new DBConnection();
+
+            try
+            {
+                connect.OpenConnection();
+
+                List<SqlParameter> param = new List<SqlParameter>();
+
+                param.Add(new SqlParameter("@NotID", Convert.ToInt32(id)));
+                var kullaniciid = Session["ID"].ToString();
+                DataTable dt = connect.GetDataTable("Select * from tAgenda.tAgenda Where NotID=@NotID ", param);
+
+                int i = 0, n = dt.Rows.Count;
+                for (i = 0; i < n; i++)
+                {
+                    DataRow dr = dt.Rows[i];
+
+                    CalendarEvent item = new CalendarEvent();
+                    item.id = int.Parse(dr["NotID"].ToString());
+                    item.title = dr["Title"].ToString();
+                    item.note = dr["NOTLAR"].ToString();
+                    eventItems.Add(item);
+                }
+
+                return Json(eventItems, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                connect.CloseConnection();
+            }
+  
+        }
     }
 }

@@ -81,6 +81,7 @@
     background-size: cover;
     height: 100vh;
     overflow: auto;
+    padding: 2% !important;
 }
 
 .dropicons {

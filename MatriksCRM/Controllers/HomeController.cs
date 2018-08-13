@@ -1,4 +1,5 @@
 ﻿using MatriksCRM.Models;
+using MatriksCRM.Views.Home;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -75,7 +76,35 @@ namespace MatriksCRM.Controllers
         [HttpPost]
         public JsonResult CreateProject(Proje proje, HttpPostedFileBase file)
         {
+            if(proje.ProjeDurum == "Teklif Asamasinda"){
+            DateTime TeklifTarihi = DateTime.Parse(proje.TeklifTarihi);
+            DBConnection connect = new DBConnection();
+            try
+            {
+                var kullaniciid = Session["ID"].ToString();
+                connect.OpenConnection();
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@KullaniciID", kullaniciid));
+                    string projeIsmi = proje.ProjeAdi + " Projesi";
+                    param.Add(new SqlParameter("@Title", projeIsmi));
+                param.Add(new SqlParameter("@StartDate", TeklifTarihi.ToString("yyyyMMdd")));
+                param.Add(new SqlParameter("@EndTime", TeklifTarihi.ToString("yyyyMMdd")));
+                param.Add(new SqlParameter("@Color", "red"));
+                param.Add(new SqlParameter("@AllDay", "1"));
+
+                string sql = "Insert into tAgenda.tAgenda(KullaniciID,Title,StartDate,EndTime,Color,AllDay) ";
+                sql += "Values(@KullaniciID,@Title,@StartDate,@EndTime,@Color,@AllDay) ";
+
+                connect.RunSqlCommand(sql, param);
+            }
+            finally
+            {
+                connect.CloseConnection();
+            }
+            }
+
             return Json(AddModifyParameters(proje, file, "AddProject"));
+
         }
 
         [HttpPost]
@@ -162,6 +191,8 @@ namespace MatriksCRM.Controllers
                 {
                     return effectedRows;
                 }
+
+
             }
 
             if (procedureName == "AddProject")
@@ -175,6 +206,7 @@ namespace MatriksCRM.Controllers
                     connection.Close();
                     return projeId;
                 }
+
             }
 
             return 0;

@@ -13,5 +13,6 @@ namespace MatriksCRM.Views.Home
         public string end { get; set; }
         public string color { get; set; }
         public bool allDay { get; set; }
+        public string note { get; set; }
     }
 }
