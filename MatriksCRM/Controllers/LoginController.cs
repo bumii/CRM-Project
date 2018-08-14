@@ -52,7 +52,7 @@ namespace MatriksCRM.Controllers
                     Session.Add("ID", reader.GetInt32(0));
                     Session.Add("Isim", reader.GetString(3));
                     Session.Add("Soyad", reader.GetString(4));
-
+                    Session.Add("Email", Email);
                     if (kullanici.hatırla == true)
                     {
                         if (HttpContext.Request.Cookies["cookie"] == null)

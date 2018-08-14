@@ -8,9 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net.Mail;
 
 namespace MatriksCRM.Controllers
 {
+    
     public class HomeController : Controller
     {
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
@@ -82,7 +84,8 @@ namespace MatriksCRM.Controllers
                 try
                 {
                     var kullaniciid = Session["ID"].ToString();
-                    var ProjeDetay = " <h5> Proje Detayları : </h5> Proje Adı : " + proje.ProjeAdi + " <br> Firma Adı : " + proje.FirmaAdi + " <br> Proje Yeri : " + proje.ProjeYeri;
+                    var ProjeDetay = " <h5> Proje Detayları : </h5> Proje Adı : " + proje.ProjeAdi + " <br> Firma Adı : " + proje.FirmaAdi + " <br> Proje Yeri : " + proje.ProjeYeri + "<br>";
+                    ProjeDetay += "<b>" + TeklifTarihi.AddDays(7).ToString() + "</b> Tarihinde müşteri ile görüşülecek. ";
                     connect.OpenConnection();
                     List<SqlParameter> param = new List<SqlParameter>();
                     param.Add(new SqlParameter("@KullaniciID", kullaniciid));
@@ -97,7 +100,9 @@ namespace MatriksCRM.Controllers
                     sql += "Values(@KullaniciID,@Title,@StartDate,@EndTime,@Color,@AllDay,@NOTLAR) ";
 
                     connect.RunSqlCommand(sql, param);
+                    string mailadresi = Session["Email"].ToString();
 
+                    mailGonder(projeIsmi, ProjeDetay, mailadresi,"x86basedhuman@gmail.com","09101997anilaras",587,"smtp.gmail.com",true);
                 }
             finally
             {
@@ -524,5 +529,41 @@ namespace MatriksCRM.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public bool mailGonder(string konu, string icerik,string gonderilecekAdres,string sistemMail,string password,int smtpPort, string smtpHost,bool enableSsl)
+        {
+            MailMessage ePosta = new MailMessage();
+            ePosta.From = new MailAddress("anilaras1@gmail.com");
+            //
+            ePosta.To.Add(gonderilecekAdres);
+            //
+            //ePosta.Attachments.Add(new Attachment(@"C:\deneme.txt"));
+            //
+            ePosta.Subject = konu;
+            //
+            ePosta.Body = icerik;
+            //
+            ePosta.Headers.Add("Content-Type","text/html");
+            SmtpClient smtp = new SmtpClient();
+            //
+            smtp.Credentials = new System.Net.NetworkCredential(sistemMail,password);
+            smtp.Port = smtpPort; //587;
+            smtp.Host = smtpHost; //"smtp.gmail.com";
+            smtp.EnableSsl = enableSsl; //true;
+            object userState = ePosta;
+            bool kontrol;
+            try
+            {
+                smtp.SendAsync(ePosta, (object)ePosta);
+                kontrol = true;
+            }
+            catch (SmtpException ex)
+            {
+                kontrol = false;
+            }
+            return kontrol;
+        }
+
     }
 }

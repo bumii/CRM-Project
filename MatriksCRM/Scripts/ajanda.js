@@ -38,7 +38,7 @@ function NewItem(selectedDate) {
     html += '<div class="row form-horizontal">';
     html += '<div class="col-md-12">';
     html += '<div class="form-group">';
-    html += '<div class="col-lg-12 control-label">Not (Max. 4000 Karakter)</div>';
+    html += '<div class="col-lg-12 control-label">Not (Max. 2000 Karakter)</div>';
     html += '<div class="col-lg-12">';
     html += '<textarea type="text" class="form-control" id="txtNote">  </textarea>';
     html += '</div>';
@@ -199,7 +199,7 @@ function bootBoxModal(title, message, id) {
 }
 // tıklanan event için silme onayı
 function DeleteItem(id) {
-    var msg_ = "<h4> Not :</h4> ";
+    var msg_ = "";
     var title_ = "";
     $.ajax({
         type: "GET",
