@@ -12,7 +12,7 @@ namespace MatriksCRM.Models
         public string FirmaAdi { get; set; }
         public string ProjeAdi { get; set; }
         public string ProjeYeri { get; set; }
-
+        public string ProjeNotu { get; set; }
         [DataType(DataType.Date)]
         public string TeklifTarihi { get; set; }
 

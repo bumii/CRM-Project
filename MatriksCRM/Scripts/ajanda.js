@@ -40,7 +40,7 @@ function NewItem(selectedDate) {
     html += '<div class="form-group">';
     html += '<div class="col-lg-12 control-label">Not (Max. 4000 Karakter)</div>';
     html += '<div class="col-lg-12">';
-    html += '<input type="text" class="form-control" id="txtNote" />';
+    html += '<textarea type="text" class="form-control" id="txtNote">  </textarea>';
     html += '</div>';
     html += '</div>';
     html += '</div>';
@@ -199,8 +199,8 @@ function bootBoxModal(title, message, id) {
 }
 // tıklanan event için silme onayı
 function DeleteItem(id) {
-    var msg_ = "<h4> Not :</h4> <br> ";
-    var title_ = "Başlık : ";
+    var msg_ = "<h4> Not :</h4> ";
+    var title_ = "";
     $.ajax({
         type: "GET",
         url: "/Calendar/GetNote/",

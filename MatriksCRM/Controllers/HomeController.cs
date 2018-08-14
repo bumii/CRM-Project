@@ -79,24 +79,26 @@ namespace MatriksCRM.Controllers
             if(proje.ProjeDurum == "Teklif Asamasinda"){
             DateTime TeklifTarihi = DateTime.Parse(proje.TeklifTarihi);
             DBConnection connect = new DBConnection();
-            try
-            {
-                var kullaniciid = Session["ID"].ToString();
-                connect.OpenConnection();
-                List<SqlParameter> param = new List<SqlParameter>();
-                param.Add(new SqlParameter("@KullaniciID", kullaniciid));
-                    string projeIsmi = proje.ProjeAdi + " Projesi";
+                try
+                {
+                    var kullaniciid = Session["ID"].ToString();
+                    var ProjeDetay = " <h5> Proje Detayları : </h5> Proje Adı : " + proje.ProjeAdi + " <br> Firma Adı : " + proje.FirmaAdi + " <br> Proje Yeri : " + proje.ProjeYeri;
+                    connect.OpenConnection();
+                    List<SqlParameter> param = new List<SqlParameter>();
+                    param.Add(new SqlParameter("@KullaniciID", kullaniciid));
+                    string projeIsmi = proje.ProjeAdi + " Proje Teklifi";
                     param.Add(new SqlParameter("@Title", projeIsmi));
-                param.Add(new SqlParameter("@StartDate", TeklifTarihi.ToString("yyyyMMdd")));
-                param.Add(new SqlParameter("@EndTime", TeklifTarihi.ToString("yyyyMMdd")));
-                param.Add(new SqlParameter("@Color", "red"));
-                param.Add(new SqlParameter("@AllDay", "1"));
+                    param.Add(new SqlParameter("@StartDate", TeklifTarihi.ToString("yyyyMMdd")));
+                    param.Add(new SqlParameter("@EndTime", TeklifTarihi.AddDays(8).ToString("yyyyMMdd")));
+                    param.Add(new SqlParameter("@Color", "blue"));
+                    param.Add(new SqlParameter("@AllDay", "1"));
+                    param.Add(new SqlParameter("@NOTLAR", ProjeDetay));
+                    string sql = "Insert into tAgenda.tAgenda(KullaniciID,Title,StartDate,EndTime,Color,AllDay,NOTLAR) ";
+                    sql += "Values(@KullaniciID,@Title,@StartDate,@EndTime,@Color,@AllDay,@NOTLAR) ";
 
-                string sql = "Insert into tAgenda.tAgenda(KullaniciID,Title,StartDate,EndTime,Color,AllDay) ";
-                sql += "Values(@KullaniciID,@Title,@StartDate,@EndTime,@Color,@AllDay) ";
+                    connect.RunSqlCommand(sql, param);
 
-                connect.RunSqlCommand(sql, param);
-            }
+                }
             finally
             {
                 connect.CloseConnection();
@@ -397,7 +399,7 @@ namespace MatriksCRM.Controllers
             }
             return Json(returnValue);
         }
-        public ActionResult Musteri()
+        public ActionResult Musteri(string durum)
         {
             List<Musteri> MusteriListesi = new List<Musteri>();
 
