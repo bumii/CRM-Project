@@ -9,6 +9,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Net.Mail;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace MatriksCRM.Controllers
 {
@@ -563,6 +569,62 @@ namespace MatriksCRM.Controllers
                 kontrol = false;
             }
             return kontrol;
+        }
+
+
+        //------------------
+        [HttpGet]
+        public JsonResult getProje()
+        {
+            List<Proje> eventItems = new List<Proje>();
+
+            DBConnection connect = new DBConnection();
+
+            try
+            {
+                connect.OpenConnection();
+
+                List<SqlParameter> param = new List<SqlParameter>();
+
+
+                var kullaniciid = Int32.Parse(Session["ID"].ToString());
+
+                param.Add(new SqlParameter("@KullaniciID", kullaniciid));
+                DataTable dt = connect.GetDataTable("Select * from Proje.ProjeBolum WHERE KullaniciID = " + kullaniciid);
+
+
+                int i = 0, n = dt.Rows.Count;
+                for (i = 0; i < n; i++)
+                {
+                    DataRow dr = dt.Rows[i];
+
+                    Proje item = new Proje();
+                    item.ProjeID = int.Parse(dr["ProjeID"].ToString());
+//                    item.FirmaAdi = dr["FirmaAdi"].ToString();
+                    item.ProjeAdi = dr["ProjeAdi"].ToString(); //string.Format("{0:s}", dr["StartDate"]);
+                    item.ProjeYeri = dr["ProjeYeri"].ToString(); //string.Format("{0:s}", dr["EndTime"]);
+                    item.TeklifTarihi = string.Format("{0:s}", dr["TeklifTarihi"]);
+                    item.ProjeDurum = dr["ProjeDurum"].ToString(); //bool.Parse(dr["AllDay"].ToString());
+                    eventItems.Add(item);
+                    DateTime oDate = Convert.ToDateTime(item.TeklifTarihi);
+
+                    if (DateTime.Today > oDate.Date.AddDays(7) ){
+                        string mailadresi = Session["Email"].ToString();
+                        mailGonder(item.ProjeAdi, item.ProjeAdi + " Proje Hakkında müşteri ile görüşülecek ", mailadresi, "x86basedhuman@gmail.com", "09101997anilaras", 587, "smtp.gmail.com", true);
+                    }
+                    if (DateTime.Today > oDate.Date.AddDays(10) && item.ProjeDurum == "Teklif Asamasinda")
+                    {
+                        string mailadresi = Session["Email"].ToString();
+                        mailGonder(item.ProjeAdi, item.ProjeAdi + " Proje Hakkında müşteri ile görüşülecek ", mailadresi, "x86basedhuman@gmail.com", "09101997anilaras", 587, "smtp.gmail.com", true);
+                    }
+                }
+
+                return Json(eventItems, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                connect.CloseConnection();
+            }
         }
 
     }
